@@ -19,10 +19,11 @@
  create table grade
  (
  	m_id				varchar2(100),
- 	g_grade			varchar2(100),
- 	g_count			int,
- 	g_price			int,
- 	g_recdate		varchar2(100)
+ 	g_grade			varchar2(100) default 'bronze',
+ 	g_count			int default 0,
+ 	g_price			int default 0,
+ 	g_recdate		varchar2(100),
+ 	g_joindate		varchar2(100)
  )
  
  alter table grade 
@@ -42,9 +43,6 @@
  
  alter table order_prod
  	add constraint pk_order_o_idx primary key(o_idx)
- 	
- alter table order_prod 
- 	add constraint fk_order_p_idx foreign key(p_idx) references product(p_idx)
  
  alter table order_prod 
  	add constraint fk_order_m_id foreign key(m_id) references member(m_id)
@@ -53,7 +51,8 @@
  (
  	p_idx				int,
  	p_name			varchar2(100),
- 	p_kind			varchar2(100),
+ 	p_bKind			varchar2(100),
+ 	p_sKind			varchar2(100),
  	p_price			int,
  	p_regdate		varchar2(100),
  	p_filename		varchar2(100),
@@ -62,6 +61,9 @@
  
  alter table product
  	add constraint pk_product_p_idx primary key(p_idx)
+ 	
+  alter table order_prod 
+ 	add constraint fk_order_p_idx foreign key(p_idx) references product(p_idx)
  
  create table instock
  (
@@ -77,7 +79,7 @@
  create table stock
  (
  	p_idx				int,
- 	p_name			varchar2(100),
+ 	p_name			varchar2(100) not null unique,
  	s_count			int,
  	s_date			varchar2(100)
  )
@@ -95,5 +97,15 @@
  
   alter table outstock
  	add constraint pk_outstock_p_idx primary key(p_idx)
+ 	
+ // 테이블 잘못 만들었거나 처음부터 다시 생성할 시
+ drop table outstock
+ drop table stock
+ drop table instock
+ drop table order_prod
+ drop table grade
+ drop table member
+ drop table product
+
  
 */
