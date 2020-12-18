@@ -1,0 +1,6035 @@
+<Tomcat 강의내용>
+  - Tomcat_HTML,CSS(6주차/20.10.14)
+  : Java 웹서버 프로그램
+
+  apache group => Java 기술로 작성된 프로그램/라이브러리
+  				  Open Source
+
+  - 설치
+  apache.org -> Library -> Tomcat -> JDK와 동일한 버전(8.5) 
+  -> zip(윈도우, 리눅스 모두 사용 가능) -> C:\에 압축풀기
+  * 바로 실행하면 에러 - 오라클과 같은 포트(8080)를 사용
+     -> 둘 중 하나 포트를 바꿔서 사용
+
+  - Tomcat 환경설정
+
+	1.(이전체크사항)
+	 #Java설치환경
+	  JAVA_HOME=c:\Program files\Java\....
+
+	2.톰캣 설치경로 등록
+	  내 PC -> 설정 -> 고급시스템 설정 -> 환경변수
+	  CATALINA_HOEM=C:\apache-tomcat-8.5.59 -> 추가
+
+	##[오라클 web 포트변경]
+	 1)sqlplus system/oracle  
+	   SQL>exec dbms_xdb.sethttpport(9000);
+	   SQL>exec dbms_xdb.sethttpport(8080);
+
+	3.톰캣 서버 환경설정
+	  1)서비스port와 인코딩설정
+	    톰캣설치폴더\conf\server.xml 
+	    -> C:\apache-tomcat-8.5.47\conf\server.xml
+	    -> 마우스 오른쪽 클릭 -> 워드패드로 열기
+	    -> <Connector port="8080" ..>
+	    -> <Connector URIEncoding="utf-8"  port="9090" ..> 로 변경
+
+	  2)웹컨텐츠의 접근권한/갱신속성지정
+	    톰캣설치폴더\conf\context.xml 
+	    -> 마우스 오른쪽 클릭 -> 워드패드로 열기
+	    -> <Context>
+	    -> <Context privileged="true" reloadable="true"> 로 변경
+	    			-> 접근권한         -> 갱신
+  - Tomcat 시작
+   - 톰캣설치폴더\conf\
+     startup: 서버 구동 (startup.sh: 리눅스용)
+     shutdown: 서버 종료 (shutdown.sh: 리눅스용)
+     -> 주소창에 localhost:9090
+
+  - Eclipse - Tomcat 서버 연결
+   - Perpective -> Java EE
+   - 하단 Servers -> new -> Apache -> Tomcat ... server 선택 -> Browse -> 톰캣 설치 폴더 선택
+
+   * 폰트(font): Lucida sans ...
+
+  * 프로젝트를 저장해서 다른 컴퓨터로 옮길 경우
+   - Project -> Build Path -> Configure.. -> Libraries -> Add Library
+    -> Server Runtime -> Apache... -> Finish
+
+  - Dynamic Web Project 생성 -> WebContent 에서 html 파일 생성
+
+  - Window -> Web Browser -> Chrome 선택(디버깅할 때 에러잡기 편함)
+
+  - Ctrl+F11 : 실행
+  - Window -> Preferences -> Web -> CSS Files, HTML Files, JSP Files 
+   -> Encoding -> ...UTF-8로 변경
+
+  - <!-- ... -->: 범위 주석 처리
+
+  - 웹 서버
+   - Http(HyperText Transfer Protocol)
+    -> 연산능력 없음.(미리 만들어놓고 제공/정적 콘텐츠)
+    -> 같은 내용을 처리해서 보낼 때 유리
+    -> "편의점 김밥"
+
+   - WAS(Web Application Server, ex)Tomcat)
+    -> 연산능력 있음.(요구사항 적용해서 생성한 후 제공/동적 콘텐츠)
+    -> 같은 내용 처리해서 보낼 때 불리(비효율적)
+    -> "김밥전문점 김밥"
+
+   - URL(Unform Resource Locator)
+       http://     localhost         :9090/2020_1014_HtmlTest/hello.html
+   	 'protocol'   'host(domain or ip):port'       'path'     / 'content'
+
+   	 * Domain Name Service(DNS): Ip랑 대응하는 서버 이름
+   	  							 www.naver.com => 210.89.160.88
+
+
+  - HTML(HyperText Markup Language)
+   HyperText: 텍스트 + 이미지 + 미디어 + ... (문서와 문서를 연결)
+   Markup: 표시 -> <tag></tag>를 이용해 데이터 표현
+
+  - Java Code 작성(Servlet.. 자바 객체) -> src 폴더 저장
+    html, jsp, image, css(정적 컨텐츠) -> WebContent 폴더 저장
+    * WEB_INF, META-INF 폴더에 저장 X -> 외부에서 접근 불가능(404 Error)
+
+  - <br>: 줄바꿈
+  - <img src = "이름.jpg">: 이미지 삽입
+  - <body bgcolor = "색상">: 배경색 
+  - <a href = "https://www.naver.com">네이버</a>: 다른 문서로 연결
+  - <video src = "mp4/Blueming.mp4" width = "400" height = "300" 
+ 		controls="controls"></video>: 비디오 삽입
+  - <hr>: 수평선
+
+  - https://www."ss"youtube.com/watch?v=dyRsYk0LyA8 -> 비디오 다운로더
+
+  - 참고사이트:https://www.w3schools.com/ (붓스트랩)
+  
+  - Font tags
+
+	  - HeadLine Tag(h1~h6)
+		block요소: 부모 요소(Element)의 폭 크기를 물려받는다 
+				   자동 줄바꿈/블록 크기조절 가능
+
+	  - font tag
+		inline요소: 1줄에 표현, 줄바꿈 안됨/크기조절 안됨
+		 			웹표준에서는 사용하지 말 것을 권유함
+	                태그안에서 조정
+
+	    font size의 해결방안 => CSS이용
+							   CSS(Cascade Style Sheet)
+
+			<p style = "font-size: 15px;">크기 15px</p> 
+			<!-- px: 가변크기(환경에 따라) -->
+			<p style = "font-size: 15pt;">크기 15pt</p> 
+			<!-- pt: 고정크기 -->
+
+	  - CSS
+	  <head> 사이에 지정, 모든 요소에 적용, 최종적으로는 inline요소 적용
+	  <style type = "text/css"></style>
+	  p{ color: blue; font-size: 12pt; ...}
+
+  - List tags
+  	- <ol></ol>: 순서있는 목록
+  				 <li>하나</li> <li>둘</li>
+    - <ul></ul>: 순서없는 목록 
+    			 <li>하나</li> <li>둘</li>
+    * CSS로 순서 추가가능
+    - <dl></dl>: 사전 목록
+    			 <dt></dt>: 제목
+    			 <dd></dd>: 내용
+    * 모두 Block 요소
+
+  - 선언적 방식 CSS
+	selector: CSS의 대상 지정
+			  selector {속성: 값; 속성: 값;}
+			  id selector => #id 
+			  자식요소 selector : 부모  > 자식 -> 직계 
+								 부모 (공백) 자식 -> 모든후손
+	- display: block, inline 지정
+	- border: 테두리
+	- width: 너비
+	- text-align: 텍스트 위치
+	- margin-right: 오른쪽 바깥 여백 설정
+	- text-decoration: 텍스트 꾸미기 지정(none; -> 밑줄 제거)
+	- color: 텍스트 색상(팔레트 표시X -> 별도의 CSS 파일에서만)
+	- font-weight: 텍스트 굵기
+	- a:hover{ ... }: a tag위에 마우스가 올라갔을 때
+	- box-shadow: 텍스트 상자 입체감 (-1px -1px 1px black; -> 들어감)
+	- min-height: 최소 높이
+	- height: auto; (내용 늘어나면 자동으로 늘림)
+
+  - Window -> Show View -> Outline: 계층도 확인
+------------------------------------------------------------------------
+
+ - Tomcat_HTML,CSS(6주차/20.10.15)
+
+  - class selector
+   .mystyle{
+			border: 1px solid red;
+			background-color: black;
+			color: yellow;
+   		   }
+
+   <p class = "mystyle"></p>
+   - text-indent: 들여쓰기
+
+  - table
+   - <table></table>: 테이블 생성
+   - <table border = "">: 선 크기(0이면 선없음)
+   - <caption></caption>: 테이블 제목
+   - <tr></tr>: 행
+   - <th></th>: 열이름(굵은 글씨, 가운데 정렬)
+   - <td></td>: 내용
+   - <th rowspan = "">: 행 합치기
+   - <th colspan = "">: 열 합치기
+   * 바꾸고 싶은 부분 드래그 + Ctrl+F: 바꾸고 싶은 부분 한번에 바꾸기
+
+  - CSS 파일 생성(외부 참조시)
+   - WebContent -> css 폴더 생성 -> new -> others -> Web -> CSS File
+    -> 변경할 요소 id 지정
+    -> css파일에서 선언식으로 코딩
+       #my_table  th{
+			background: #000000;
+			color: white;
+		}
+    -> html파일에서 <head> 사이에
+    	<link rel = "stylesheet" href = "css/mystyle.css">
+  * 외부 파일로 연결할 경우, Chrome 사이트에서는 캐시가 저장
+   	 -> 변경이 안될수도 있음
+   	 -> 설정 -> 인터넷 방문 기록 삭제              
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  - Bootstrap 사용 (붓스트랩 라이브러리)
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+   - 요소에 class = "table"
+    * 다른 옵션을 추가 하려면 한칸 띄고 붙여넣기 해야함
+      <table class = "table table-striped table-bordered">
+
+   - 테이블 크기 고정
+    - <div></div>: table의 부모 클래스
+    			   <div style = "width: ;"> -> 고정 길이로 변경
+
+   - 행 색상 변경: <tr class = "success"> ...
+
+   - 버튼 생성: 
+   <input type="button" value = "등록" class = "btn btn-primary">
+   * 체크박스나 버튼은 값이 없으면 넘어가지 않음
+
+   - form: 서버로 전송할 데이터 묶어서 전송
+	 	속성) action <= 전송대상(생략하면 자신의 페이지 호출)
+			 _07_form_tags.html?name=홍길동&id=hong
+
+	- input
+	 - type = "text": 텍스트 데이터 입력
+	    이름:<input type = "text" name = "name">
+
+	 - type = "radio": 라디오 버튼
+	    <input type = "radio" value = "남자" name = "gender" checked = 
+	    "checked">
+
+	 - type = "checkbox": 체크박스(전송시 체크된 값만 넘어간다)
+	    <input type = "checkbox" value = "독서" name = "hobby">
+
+	 - type = "file": 파일 업로드
+	    <input type = "file" name = "photo">
+
+	 - type = "submit": 파일 제출
+	    <input type = "submit" value = "서버로 보내기">
+
+	 * 웹 표준을 준수하지 않는 컨트롤
+	 - type = "date": 날짜 입력
+	 	생년월일:<input type = "date" ><br>
+
+	 - type = "color"
+	    좋아하는 색상:<input type = "color">
+
+	- <select></select>: 콤보박스 형식
+	    <select name = "blood">
+			<option value = "A형"> A형 </option>
+			<option value = "B형"> B형 </option>
+			<option value = "O형"> O형 </option>
+			<option value = "AB형"> AB형 </option>
+		</select>
+
+	- <textarea></textarea>: 다수의 줄 입력
+	   <textarea name = "profile" rows="5" cols="50"></textarea>
+
+	- chrome -> F12: HTML 디버깅
+
+	- type = "submit" -> 웹서버로 보내면 수많은 요청이 들어오므로 부담이 됌
+	 -> 따라서 체크할 사항은 자체적으로 체크해서 보내야함
+	 -> <input type = "button" value = "서버로 보내기" 
+		onclick = "javascript:send();"> (자바스크립트함수)
+
+	 - javascript가 html(문서)을 관리하는 객체: document
+	 
+	 - <script type="text/javascript"> 
+		function send()
+		{
+			//alert('서버로 전송해줘')
+			var f = document.f;
+			
+			//입력값에 대한 체크...trim() -> 공백제거
+			var name = f.name.value.trim();
+			var id = f.id.value.trim();
+			var pwd = f.pwd.value.trim();
+			
+			//문자열(string): '', "" -> 문자개념이 없음
+			if(name == ''){
+				window.alert("이름을 입력하세요."); //window 생략가능
+				f.name.value = ""; //이전값 지우기
+				f.name.focus();
+				return;
+			}
+			
+			if(id == ''){
+				window.alert("아이디를 입력하세요."); 
+				f.id.value = ""; 
+				f.id.focus();
+				return;
+			}
+			
+			if(pwd == ''){
+				window.alert("패스워드를 입력하세요."); 
+				f.pwd.value = ""; 
+				f.pwd.focus();
+				return;
+			}
+			
+			//전송해라
+			f.submit();//전송함수
+		} 
+		</script> 
+	 	=> <head> 영역에 자바스크립트 코딩 
+
+  - 외부 실행 파일 생성
+
+   프로젝트 오른쪽 클릭 -> Export -> WAR file -> 경로 선택 -> Export.. , Overwrite .. 체크 -> WAR file 생성
+
+   WAR file -> Tomcat 설치 폴더 -> webapps에 이동 -> Tomcat startup 실행 -> 웹에서 파일경로에 있는 html파일 실행
+    => 이클립스에서 실행하는 게 아닌 톰캣서버에서 실행하는 html파일
+   * 이클립스에서 html 파일을 수정하면 다시 Export 하거나 복사해야함
+	 
+------------------------------------------------------------------------
+
+ - Tomcat_Javascript(6주차/20.10.16)
+
+  - 문법은 Java와 거의 비슷
+  	- 주석: //, /* */
+  	- 마지막 문장 끝에 ;
+
+  - HTML 파일 내 <head> 태그 사이에 
+    <script type="text/javascript"> ... </script>
+     -> type = "text/javascript" 생략가능
+
+  - 자료형
+  	- 변수 선언: var 변수;
+	 	string: 문자형 
+	 	number: 숫자형 
+	 	boolean: 논리형
+	 	Date: 날짜형
+	 	* 값을 넣지 않으면 undefined
+	 	* 문자형은 '', "" 둘 다 사용
+
+	 	 var n; // undefined
+		 n = '안녕'; // String
+		 n = 10; // Number
+		 n = true; // Boolean
+		 n = new Date(); // Date
+
+	- 마지막으로 넣은 값의 자료형으로 형변환
+  
+  - document
+   : HTML을 관리하는 객체
+   - document.write(): body안에 내용을 씀
+     // 년월일
+	 var year = n.getYear() + 1900;
+	 var month = n.getMonth() + 1;
+	 var day = n.getDate();
+	 // 시분초
+	 var hour = n.getHours();
+	 var minute = n.getMinutes();
+	 var second = n.getSeconds();
+	 
+	 document.write(n + "<br>"); 
+	 document.write(year + "<br>");
+	 document.write(month + "<br>");
+	 document.write(day + "<br>");
+	 document.write(hour + ":");
+	 document.write(minute + ":");
+	 document.write(second + "<br>");
+
+  - 함수선언
+	 function test(){
+		 var local_a = 10; // 지역변수
+		 	global_a = 20; // 전역변수 -> 함수가 호출이 되어야 생성 가능
+	 }
+
+	 -> 가급적이면 이렇게 사용하지 말것
+	 -> 함수 밖에서 전역변수 선언
+	 - 함수의 인자로 변수 선언시 var 안붙임
+	   function plus(a, b)
+
+  - 연산자(Java와 동일)
+   1. 산술연산자: + - * / %
+   2. 증감연산자: ++ -- += ...
+   3. 비교연산자: > >= < <= != == === !==
+      * ===, !==는 자료형+값 비교
+        <-> ==, !=는 값만 비교
+
+  - 제어문
+   for, while, if ...
+
+   for(var i = 1; i <= n; i++){ ... }
+
+   - window.prompt(): 입력을 받는 함수
+   - window.alert(): 메세지를 띄우는 함수
+
+    dan = window.prompt("단:");
+
+	// 유효범위가 아니면
+	if(dan<2 || dan>9){
+		window.alert("2~9 사이값을 입력하세요");
+		document.write("입력 오류<br>")
+	}else{
+		
+		var str = "<table border = '1'>";
+		str = str + "<tr><th>" + dan + "단</th></tr>";
+		
+		
+		for(var i = 1; i <= 9; i++){
+			var str1 = dan + "x" + i + "=" + (dan*i);
+			str = str + "<tr><td>" + str1 + "</td></tr>";
+		}
+		
+		str = str + "</table>";
+		
+		document.write(str);
+	}
+
+	document.write("<a href = '_03_제어문.html'>다시하기</a>");
+
+   - console.log(): F+12에 요소의 코드 나타남
+     -> 복사해서 html파일에 출력
+     -> Ctrl + Shift + F: 코드 정리
+     -> 확인
+
+  - 배열
+
+   var sido_array = [ '서울', '경기', '인천', '대전' ];
+   var fruit_array = [];
+   var fruit_array = new Array();
+   	fruit_array[0] = "사과";
+
+   * 배열 마지막 첨자보다 큰 첨자로 값을 넣으면 그 사이의 값들은 undefined
+
+  - JSON(Java Script Object Notation)
+
+   : 자바스크립트에서 객체표현방법
+   - 모든 언어의 공통된 데이터 타입, 반정형 구조
+   - 형식 => { "속성1":"값1", "속성2":"값2", "속성3":"값3", ... }
+	     var p = {"name":"일길동", "age":"30", "tel":"010-111-1234"};
+	     document.write("p's name = " + p.name + "<br>");
+   - JSON안에 JSON형식 저장 가능
+	var pp = 
+			{
+				"name" : 
+				{
+					"full_name" : "홍길동",
+					"family_name" : "홍",
+					"last_name" : "길동"
+				},
+				"tel":
+				{
+					"mobile":"010-111-1111",
+					"home":"02-111-2345",
+					"office": "02-222-345"
+				},
+				"hobby":["독서", "영화", "낚시"]
+			};
+
+	document.write(pp.name.family_name + "씨의 취미는 ");
+	
+	for(var i = 0; i < pp.hobby.length; i++){
+		document.write(pp.hobby[i] + " ");
+	}
+
+	 - JSON Object
+	  var persons = 
+	  {"list":
+			  [ 
+				{"name":"일길동", "age":21, "tel":"010-111-1234"} ,
+				{"name":"이길동", "age":22, "tel":"010-211-1234"} ,
+				{"name":"삼길동", "age":23, "tel":"010-311-1234"} ,
+				{"name":"사길동", "age":24, "tel":"010-411-1234"} ,
+				{"name":"오길동", "age":25, "tel":"010-511-1234"}
+			  ]
+	  };
+
+------------------------------------------------------------------------
+
+ - Tomcat_Javascript(7주차/20.10.19)
+
+  - BOM(Brower Object Model): 윈도우 중심
+	 : window, location, history, navigator, ...
+	DOM(Document Object Model): 문서 중심
+	 : document
+
+	- window.location.href = "...": ...로 이동하는 객체
+	- window.confirm("...?"): 확인하고 True와 False를 반환하는 객체
+	- history.go(n): n이 양수면 다음 n페이지, 음수면 이전 n페이지로 이동
+
+	- name 속성: 서버로 전송시 사용
+	  id 속성: 클라이언트에서만 사용시
+
+	- document.getElementById("id"): id를 컨트롤할 수 있는 객체
+	- document.getElementById("id").value.trim(): id의 값을 얻어옴
+	* javascript에서 '+' 연산만 숫자, 문자열 연산 둘다 적용
+	   -> 계산하기 전 형변환을 해주어야 함.
+	- document.getElementById("id").innerHTML: id에 HTML내용을 삽입
+
+	  - 문자열 -> 숫자로 변환시키는 방법
+			방법1: parseInt("10") => 10
+			방법2: Number("10") => 10
+
+	- 자바 스크립트 정규식
+	 /.../: 정규표현식
+	 ^: 시작문자
+	 $: 끝문자
+	 []: 0-9사이 문자
+	 {n}: n자리
+	 {n, m}: n에서 m자리까지
+	 {n, }: n자리 이상
+
+	 ex)
+	 var regular_number = /^[0-9]{1,}$/;
+	 regular_number.test(x); => x에 대해 정규표현식 테스트, True or False
+
+	- Math.floor(n): n에 대한 내림함수
+
+  - CSS
+   *{ ... }: 모든 태그에 적용 
+
+  - Timer: 시간(1/1000초)(ms)
+		setTimeout("함수명();", 시간); -> 단 1회만 호출
+		setInterval("함수명();", 시간); -> 주기적으로 호출	
+
+  - 문자열로 만들기: (Number) + ""
+
+  - 외부 작성된 자바스크립트 참조
+   - 생성: new -> other -> JavaScript Source File -> Finish
+   -> <script type="text/javascript" src = "파일위치"></script>
+
+  - 문자열 잘라내는 함수
+   	  substring(start, end)
+	   == slice(start, end)
+	  substr(start, count)
+	  charAt(index)
+
+
+------------------------------------------------------------------------
+
+ - Tomcat_jQuery(7주차/20.10.20)
+
+  - jQuery
+   : 자바스크립트로 만들어진 라이브러리
+    * jQuery 라이브러리를 <script>에 불러와야함
+    * 참조사이트: jquery.com
+     -> Ui -> Demos -> view source -> <link> ... </script> 복사 -> 붙이기 -> id = "..." 일치시키기
+
+    - Project 실행할 때 Next 눌러서 실행안시킬 프로젝트 왼쪽으로 옮기기
+     -> 톰캣에 과부하가 걸리기 때문
+
+    - 자바스크립트: 인터프리터
+                   -> 위에서부터 해석해서 실행
+                   -> <body> 내용위에 <script>를 작성하면 실행이 안될수도 있음
+
+      윈도우 (초기화)이벤트: 윈도우가 배치가 완료된 후 실행될 함수, 내용
+		-> window.onload = init(); (한번만 실행)
+		-> window.onload = function(){}; (이름이 없어도 됨 -> 익명함수)
+
+	- 함수생성방법 
+
+	1. 선언적방식: 호출할때마다 매핑
+	function myfunc1(){}
+	function init(){ alert('Element 배치 완료'); }
+
+	2. 리터럴방식: 하나를 만들어놓고 반환
+	var myfunc2 = function(){}
+	var init2   = function(){ alert('리터럴:Element 배치 완료'); }
+	
+	3. 익명함수
+	function(){}
+
+	- jQuery 초기화 
+	대상.사건(처리함수)를 호출하겠다
+	jQuery(selector).event(처리함수);
+
+	jQuery(document).ready(function(){
+		console.log('1.jQuery(docuemnt).ready :Element 배치 완료');
+	});
+
+	// jQuery => $ 기호사용
+
+	$(document).ready(function(){
+		console.log('2.$(docuemnt).ready :Element 배치 완료');
+	});
+
+	// 초기화 처리에만 해당 : selector / event생략 => $();
+	$(function(){
+		console.log('3.$(처리함수) :Element 배치 완료');
+	});
+
+	* document 배치 -> window 배치
+
+	  - document 안에 요소에 대한 jQuery 초기화
+	$(document).ready(function(){
+	console.log('jQuery : 초기셋팅 완료!!');
+	
+	// jQuery -> $
+	// id selector
+	// 중복일 경우 마지막 처리만 출력
+	jQuery("#disp").html("jQuery:초기화 완료!!!");
+	$("#disp").html("$:초기화 완료!!!");
+	});
+
+	- $(selector).click(function(){}): 이 버튼이 눌러졌을때 함수 호출
+	- $(selector).val(): 객체의 값
+	- $(selector).val().trim(): 객체의 값에서 공백을 제거
+	- $(this): 이 객체를 호출한 요소
+	- $(selector).html(): body 내용
+
+	- class selector
+		// 	<input  class="btn3" />
+		$(".btn3").click(function(){
+			//$("input[value='btn3']").click(function(){	
+			var p = $("p#p1").html();
+			alert(p);
+		});
+
+	- 클래스 설계
+
+	function 클래스명(변수){
+		// Member field
+		this.변수명 = 변수;
+		// Member function
+		this.함수명 = function(){
+			...	
+		}
+		return;
+	}
+
+	- toFixed(n): n자리까지 반올림 후 출력
+	- Math.pow(x, n): x의 n승
+
+	- jquery : CSS에 사용하던 선택자를 그대로 사용할수 있다.
+	  $("#pwd").css("border","1px solid red");
+	  $(".row").addClass("title"); -> css의 title style을 추가
+	  $("input[type='submit']").css("border","1px solid blue");
+	  $("table").css("border","2px solid blue");
+
+	- <div>: 영역을 수정, block요소
+	- <span>: 줄 바꿈이 안됨, 작은 영역, inline요소
+	- 멀티 셀렉터
+		$("h2, #id1, #id2").css("background","pink");
+	- 모든 요소 선택
+		$("*").css("border","1px solid red");
+
+	- 셀렉터에 조건 지정
+		//$("태그명[속성명]").css()
+		// a태그중 속성 target 있는 요소만 회색
+		$("a[target]").css("background","#cccccc");
+		* target="_blank": 새 탭에서 페이지를 열음
+
+		// = : 같은 것   != : 같지 않은것
+		$("input[size != '20']").css("border","1px solid red");
+		
+		// = 정확하게 일치 
+		// ~= 공백을 포함한 내용이 일치
+		$("a[href~='http://www.naver.com']").css("background","pink");
+
+		// *= 해당문자를 포함하는 요소
+		$("div[id*='tent']").css("background","blue");
+
+		// $= 해당값으로 끝나는 요소
+		$("div[id$='1']").css("background","red");
+
+		// ^= ~로 시작하는 요소
+		$("div[id^='v']").css("background","yellow");
+		 
+------------------------------------------------------------------------
+
+ - Tomcat Layout(7주차/20.10.21)
+
+  - Layout
+
+  	- 종류(div로 전체영역을 정함)
+  	 1. 1단 Layout
+  	  - Header(회사로고, 주메뉴), Content(본문), Footer(사이트정보, 정책)
+
+  	 2. 2단 Layout
+  	  - Header, Content, Side(서브메뉴), Footer
+
+  	 3. 3단 Layout
+  	  - Header, Aside(베너), Content, Aside, Footer
+
+    - 웹 브라우저마다 여백이 다름 -> 다 다르게 나타남
+      - 모든 요소의 마진, 패딩을 제거
+      *{
+		margin: 0;
+		padding: 0;
+	   }
+
+	  - 중앙 배치
+	  margin: auto;
+
+	- div: block요소 
+ 		   부모의 크기를 물려받음 
+ 		   px로 하면 부모, 자식 둘다 크기를 바꿔야함 
+ 		    -> width: 100%; (부모크기 중 100%)
+
+ 	- 부유 속성: layer를 띄워서 배치
+ 				-> 평소 layer는 바닥에 붙어있다고 가정
+ 				-> 위의 layer를 띄우면 아래 layer는 위로 올라감
+
+ 	float: left; -> 띄워서 왼쪽으로 배치
+ 					inline-block 요소로 변경
+ 	clear: left; -> 부유속성 해지(왼쪽으로 뜬 layer)
+ 	clear: both; -> 양쪽 둘다 해지
+
+ 	- border를 추가하면 크기가 달라지므로 다른 요소가 밑으로 떨어질 수 있음
+ 	 -> 감안해서 계산 or 부모 크기를 늘림
+
+ 	- $(selector).find("tag"): tag를 찾음 (동일한 tag에서는 첫번째 tag)
+ 	 * find("tag")가 없으면 undefined 반환
+ 	- $(selector).children().eq(n): 자식 요소의 n번째 선택(0부터)
+
+  - Selector
+
+   - $("selector:even"): 짝수 index
+   - $("selector:odd"): 홀수 index
+   - $("selector:first"): 첫번째 index
+   - $("selector:eq(n)"): n번째 index
+   - $("selector:gt(n)"): n번째 보다 큰 index들
+   - $("selector:lt(n)"): n번째 보다 작은 index들
+   - $(selector).addClass(".class"): .class css스타일 추가
+   - $(selector).removeClass(".class"): .class css스타일 제거
+   - $(selector + (형제요소)): selector의 형제요소
+     //체크안된결과
+	 $("input:not(:checked) + span").css("background-color","pink");
+	 //체크된결과
+	 $("input[checked] + span").css("background-color","red");
+
+  - 요소를 수정/전달하는 방식
+
+   1. 맵(Map) 방식(JSON)
+    $("#box1").css(
+						{
+							//key   : value
+							"color" : "red",
+							"background" : "green",
+							"width" : "200px",
+							"height" : "200px"
+						}
+					);
+
+   2. method chainning 
+    $("#box1").css("color","red")
+			  .css("background","pink")
+			  .css("width","200px")
+			  .css("height","200px");
+
+  - prompt("내용"): 윈도우 창에 내용을 출력하고 값을 가져옴
+                       올라갔을 때    내려갔을 때
+  - $(selector).hover(function(){}, function(){});
+
+  - 요소의 내용을 가져와서 수정
+    var w = $("#box1").css("width");
+	console.log(w);
+	alert("너비 : " + w);
+	// w = '200px' + 50
+	w = w.replace('px',''); //px제거
+	w = parseInt(w) + 50; //정수변환+50
+	alert(w);
+	$("#box1").css("width", w +'px');
+
+  - $(selector:test) == $(selector[type = 'text']) => 같은 표현
+  - css -> margin-left:
+  	jQuery -> .css("marginLeft", )
+  - .css("display", "none"): 숨기기
+    <-> .css("display", "block"): 보여주기
+
+  - jQuery Effect
+
+   - 숨기기: $(selector).hide(n) -> n초 동안 숨기기
+   - 보여주기: $(selector).show(n) -> n초 동안 보여주기
+   - 토글: $(selector).toggle(n) -> n초 동안 숨기기 or 보여주기
+   - 슬라이드업: $(selector).slideUp(n) -> n초 동안 슬라이드 업
+   - 슬라이드다운: $(selector).slideDown(n) -> n초 동안 슬라이드 다운
+   - 슬라이드토글: $(selector).slideToggle(n) -> n초 동안 슬라이드 토글
+   - 페이드인: $(selector).fadeIn(n) -> n초 동안 페이드 인
+   - 페이드아웃: $(selector).fadeOut(n) -> n초 동안 페이드 아웃
+   - 애니메이션: $(selector).animate({marginLeft:300}, n)
+   					-> marginLeft를 300까지 n초안에 변경
+   			    $(selector).animate({JSON배열 가능}, n, function(){})
+   			    	-> n초 마다 function 실행
+   - $(selector).css("opacity", n): 투명도 조절(0 ~ 1)
+
+   - $(window).scroll(function(){ ... }): 스크롤이 되어질 때
+   - $(window).scrollTop(): 위에서부터 스크롤된 크기
+
+   - 마우스 오버된 img의 src속성값얻기
+	var src = $(this).find("img").attr("src");
+	       // this의 자식요소(img)알아낸다. 
+	var src = $("img",this).attr("src");
+	console.log(src);
+	$("#img1").attr("src",src);
+
+  - CSS
+
+   - position: relative; -> 상대좌표 (부모를 기준으로)
+   			   absolute; -> 절대좌표
+   - overflow: hidden; -> 부모영역보다 크면 감추기
+
+------------------------------------------------------------------------
+
+ - Tomcat Servlet(7주차/20.10.22)
+
+  - Servlet
+   : 클라이언트의 요청을 처리하는 서비스 객체
+
+   - Project 단위 -> context
+   - 2.5 버전
+	- WebContent -> WEB-INF -> web.xml: 프로젝트 웹 환경설정
+	   									   만든 Sevlet정보 저장(2.5버전)
+
+	- 호출 방식 (2.5버전)
+	   url 요청 -> WEB-INF -> web.xml -> servlet 찾음 -> 실행 파일 호출
+
+   - 3. 버전
+    - Annotation 방식
+
+     요청URL -> @WebServlet("/hello.do") "꼬리표" -> hello.do 호출 -> 
+      service 실행
+     * "/hello.do" -> "/hi.do"로 호출 url 수정 가능
+     * web.xml이 없음
+       -> project 만들때 next -> generate web.xml ... -> 생성 가능 
+
+
+   - Servlet 파일 생성
+    Java Resources -> src -> new -> Servlet 생성 
+    	-> Java package: action, Class name: ... -> Next
+    	-> URL mappings -> Edit -> 이름.do/action (선택) -> Next
+    	-> Inherit... , servie만 check -> Finish
+
+   - 다른 사용자의 웹 요청
+    url-> localhost:9090/... -> ip:9090/...
+
+   - Servlet 객체는 하나만 생성 -> single-ton
+   - 변경 내용이 적용 -> Servers -> Tomcat... -> restart
+
+   - 응답 처리 과정
+    HttpServletRequest request -> 요청처리객체
+    HttpServletResponse response -> 응답처리객체
+
+	// 요청 정보 접수
+	String ip = request.getRemoteAddr(); // 요청한 ip 알아내기
+	System.out.printf("--[%s:]:님이 호출--\n", ip);
+	
+	// 응답 처리(html로 응답)
+	// 결과 전송 문서에 대한 정보를 전달
+	//response.setContentType("image/jpg;");
+	//						 mime type; 문자셋(문자에 대한 인코딩 타입)
+	response.setContentType("text/html; charset = utf-8;");
+	// 출력객체
+	PrintWriter out = response.getWriter();
+	// -> 순서바뀌면 안됌
+
+
+	// 결과전송(html형식의 문서를 생성 -> 전달)
+	out.print("<html>");
+	out.print("<head><title>응답처리</title></head>");
+	out.print("<body>");
+	out.printf("<b>[%s]</b>님 방문을 환영합니다", ip);
+	out.print("</body>");
+	out.print("</html>");
+
+	String msg = "";
+	String nation = request.getParameter("nation");
+	if(nation == null || nation.isEmpty())
+		nation = "kor";
+	switch(nation)
+	{
+		case "kor": 
+			msg = String.format("한국어[%s]: 안녕하세요", nation); 
+			break;
+		case "eng": 
+			msg = String.format("영어[%s]: Hello Everyone!", nation); 
+			break;
+		case "jpn": 
+			msg = String.format("일본어[%s]: 곤니치와", nation); 
+			break;
+		case "chn": 
+			msg = String.format("중국어[%s]: 니하오마", nation); 
+			break;
+		case "ger": 
+			msg = String.format("독일어[%s]: 구텐탁", nation); 
+			break;
+		case "fra": 
+			msg = String.format("프랑스어[%s]: 봉주르", nation); 
+			break;
+		default: 
+			msg = String.format("기타[%s]: 뭐지?", nation); 
+		
+	}
+   - 요청은 무조건 String형으로 받아야함
+
+   - 요청 내용 전송
+    .../2020_1022_Servlet_3x/hello.do ?nation=kor
+                                      -> 요청 내용(Query)
+
+   - 클라이언트 <-> 서버 통신과정
+    클라이언트의 url 에서 서비스 요청 -> 정보 전송 -> Servlet에서 정보 받고
+    실행 -> 결과 전달
+
+   - html <form>: 정보를 전송할때 사용하는 태그
+    * 자신과 같이 있는 위치에서는 앞의 주소를 생략해도 됨(절대주소)
+	 <form action = "http://localhost:9090/2020_1022_Servlet_3x/hello.do">...</form>
+	  -> <form action = "hello.do">...</form>
+     
+   - Servers -> Tomcat.. [restart] -> restart 실행 -> 동기화
+
+   - Servlet Lifecycle
+    서비스 요청 - Container에 있는가?
+     -> 없으면 생성, init(초기화), container 적재 -> 서비스 실행(Thread 할당)
+     -> 있으면 서비스 실행
+     -> 소멸시 destroy() 호출
+
+    - 생성자(Constructor), init()은 context 생성할때 제일 먼저 한번만 실행
+    - destroy(): 내용이 변경되면 container에서 서비스를 내려놓는 역할
+    			내용 변경 -> 새로 고침할때 발생
+
+   - doGet()
+   	: 주소와 Query를 같이 넘김
+   	 -> 전송속도 빠르다(전송량의 제한이 있음)
+   	 -> 보안에 취약하다
+
+   - doPost()
+    : 요청헤더에 넣어져서 전달
+     -> 보안성이 좋다(외부에 노출X)
+     -> 전송속도 느리다(전송량의 제한이 없음)
+    * 가끔 면접질문으로 나올수도 있음
+
+------------------------------------------------------------------------
+
+ - Tomcat Servlet(7주차/20.10.23)
+
+  - id와 name 속성의 차이점
+    	id  : client에서 활용시(서버와 무관)
+		name: server로 정보를 전달시 사용
+
+  - form데이터를 전달하는 방식
+   1. var f = document.f;
+
+   2. var f = document.forms[0];
+      // forms: 현재 html내의 폼의 정보를 배열로 관리
+
+   3. onclick = "send3(this.form);"
+      function send3(f){ 
+      	var id = f.id.value.trim();
+		var pwd = f.pwd.value.trim();
+		... }
+      -> this.form: this를 소유하고 있는 form
+      				form element만 사용가능함
+         대부분 이 방식으로 사용 
+
+  - input type = "button" 외의 버튼
+  	<button onclick = "...">...</button>
+  	* auto submit()됨: onsubmit()
+ 	  -> 값을 입력하지 않아도 값이 전송됨
+ 	  -> event 종료후 return false; 전달 => onsubmit() 하지 말아라
+ 	  -> <button onclick = "send4(this.form); return false;">..</button>
+
+ 	<input type = "image" src = "..." onclick = "...">
+ 	  -> <input type = "image" onclick = "return send5(this.form);" 
+ 	  src = "...">
+ 	  -> send5() 함수내에서 return false; 추가
+
+  - POST방식 서버 전송
+   <form action = "..." method = "POST">...</form>
+    - 문제점: POST로 전송시 Servlet에서 한글이 깨짐 (GET방식은 상관X)
+      -> Servlet에서 인코딩 셋팅
+        -> request.setCharacterEncoding("utf-8");
+
+  - 서버가 바뀌면 서버 restart
+    클라이언트(html)이 바뀌면 새로고침
+    * 서버 restart 단축키: Ctrl + Alt + R
+
+  - checkbox 입력 수신시
+    -> 동일한 parameter 이름이 넘어올 경우 배열로 받음
+    String [] hobby_array = request.getParameterValues("hobby");
+    -> 선택안한 경우: hobby_array = null
+
+  - 다중 text 입력 수신시
+    -> 동일한 parameter 이름이 넘어올 경우 배열로 받음
+    String [] friend_array = request.getParameterValues("friend");
+    -> 값이 입력되지 않으면: friend_array = {"", "", ""};
+
+  - StringBuffer sb = new StringBuffer(str);
+    -> sb의 초기값 = "str"
+
+------------------------------------------------------------------------
+
+ - Tomcat JSP(8주차/20.10.26)
+
+  - JSP(Java Server Page)
+   : Servlet(을 보조하는 코드)
+
+   Servlet -> 자바 코드 안 HTML
+   JSP -> HTML 코드 안 자바 코드
+
+   .jsp => .java => .class => Servlet 적재
+
+   WebContent에 생성(html/jsp/img...)
+
+   String path = application.getRealPath("/");
+   // 현재 WebApp의 실행 경로
+   System.out.println(path);
+   -> C:\WebStudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\2020_1026_JSPTest\
+
+   C:\WebStudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\work\Catalina\localhost\2020_1026_JSPTest\org\apache\jsp
+    -> jsp에서 코딩한 class, java 파일 생성
+
+   * Catalina: 아파치 서버의 별칭
+   * editplus: 에디터 프로그램
+
+   <%@ ... %>: Header -> import, Encoding, 외부 파일...
+   <%! ... %>: 선언부 -> Servlet파일에서 맨 위에서 선언, 거의 사용하지 않음
+   <%  ... %>: 자바 코드 삽입(html내 어디든지 코드 삽입가능)
+   			   script(자바코드가 삽입되는 역역)
+			   _jspService()내에 작성
+   <%= 변수 %>: 표현식 -> out.print(변수), 거의 사용하지 않음
+   <%-- ... -->: jsp 주석, jsp -> Servlet변환시 포함 안됨
+
+   <%@include >: 2문서 합쳐짐(1개의 서블릿) A.jsp내에 B.jsp
+    -> 모두 한문서에 합쳐지기때문에 css 파일을 head에 한번에 link
+
+   - JSTL(JSP Standard Tag Library)
+
+    - JSTL 사용
+     -> C:\apache-tomcat-8.5.59\webapps\examples\WEB-INF\lib
+     -> 파일 2개
+      - taglibs-standard-impl-1.2.5
+      - taglibs-standard-spec-1.2.5
+     -> C:\apache-tomcat-8.5.59\lib로 복사
+	  - core 라이브러리: if, forEach... 사용가능
+	 -> <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	    -> html태그 위에 추가
+
+   - 쿼리를 통한 다른 메뉴 보여주기
+    <li><a href = "main_company.jsp?menu=intro">인사말</a></li>
+                                    -> 쿼리내용
+	<c:if test="${ empty param.menu or param.menu == 'intro' }">
+  prefix="c" : if { 파라미터가 빈 경우 또는 파라미터의 menu가 intro }
+		<%@include file = "_03_content/company/intro.jsp"%>
+		                    -> 이 파일을 보여주기
+	</c:if>
+
+------------------------------------------------------------------------
+<Layout 평가문제>
+
+ - 2단 Layout: Header, Side, Content, Footer
+  - Header
+   Python/R을 이용한 빅데이터 분석 전문가 과정, login
+
+  - Side
+   아이콘 수직 배치(마우스를 갖다대면 메뉴 열림)
+   Home, Class, Community, Customer
+
+  - Content
+   Home(main) - Java, Oracle, Tomcat 설명 + 학습하기(버튼)
+   Class - Java, Oracle, Tomcat 강의내용
+   Community - QnA, 자료실, 자유게시판
+   Customer - 수강신청, 상담문의, 자주묻는질문
+
+  - Footer
+
+    - 강의 내용 외
+
+   - 가변영역, 고정영역 나누기
+    .wrapper {
+	overflow : hidden;
+	}
+
+	.main {
+		float : left;
+		width : -webkit-calc (100 % - 300px);
+		width : calc (100 % - 300px);
+	}
+
+	.side {
+		float : right;
+		width : 300px;
+	}
+
+    - 테두리 둥글게 만드는 속성
+
+     - border-radius: aa aa aa aa / bb bb bb bb
+       .jb {
+			border-radius: 80px / 40px;
+		}
+
+     - border-radius: aa bb aa bb / aa bb aa bb
+        .jb {
+			border-radius: 40px 80px;
+		}
+
+	 - border-radius: aa aa aa aa / aa aa aa aa
+	 	.jb {
+			border-radius: 50%;
+		}
+	
+	- 윈도우 창 크기 변경해도 div 고정
+	 -> position: absolute;
+
+------------------------------------------------------------------------
+ - Tomcat EL, JSTL(8주차/20.10.27)
+
+  - JSP 내장객체
+   Servlet Container
+   -> Servlet에 각각 요청을 받음
+   -> Servlet마다 공간을 할당 받음
+   - PageContext -> 해당 객체-Servlet만 사용할 수 있는 영역
+
+   - request -> 공유 공간(Servlet객체끼리), 유저의 요구 사항(요청 처리)
+   				유저가 요청시에 생성되고 응답을 받으면 소멸
+   
+   - session -> 로그인 처리, 최초 접속시 사용자마다 키를 할당 받음
+   			    네이버 접속 -> 유저에 새션을 할당해줌 
+   			                  -> 브라우저를 끄면 새션이 소멸
+   
+   - application -> 서버가 구동되면 제일 처음으로 application 영역(전역)이 
+                 만들어짐, 제일 처음에 생성되고 제일 나중에 없어짐
+
+   - API binding(영역에 저장, 호출, 삭제)
+    setAttribute(key, value) -> key:value값을 저장
+    getAttribute(key) -> key의 value를 불러옴
+    removeAttribute(key) -> key를 삭제
+    ex) pageContext.setAttribute(key, value)
+         -> pageContext에 (key:value)를 저장
+   
+  - EL 내장객체
+       저장(JSP)      호출(EL)
+   - PageContext -> pageScope
+   - request -> requestScope
+   - session -> sessionScope
+   - application -> applicationScope
+   - param
+
+  - EL(Expresion Language): 표현 언어
+	 1. JSP에서만 사용가능
+	 2. 표현식: ${ 값 }
+	 3. 값: 상수, 4개 영역(Scope)에 저장된 값, parameter로 넘어온 값
+	 4. 연산자
+	 5. 내장 객체
+		 pageScope
+		 requestScope
+		 sessionScope
+		 applicationScope
+		 param
+
+    * \${ ... } -> 문자열 그 자체로 인식
+
+   - 산술연산자: Java와 동일(나누기 연산은 소수점까지)
+   - 관계연산자: ${ a > b } or ${ a gt b }  -> greater than
+   				${ a >= b } or ${ a ge b } -> greater equal
+   				${ a < b } or ${ a lt b }  -> less than
+   				${ a <= b } or ${ a le b } -> less equal
+   				${ 3==2 } or ${ 3 eq 2 }   -> equal
+   				${ 3!=2 } or ${ 3 ne 2 }   -> not equal
+   - 기타연산자: ${ (a > b) ? a : b } -> 삼항연산자
+   				${ empty param.msg ? 'parameter is empty' : param.msg }
+   				 -> msg 파라미터가 비어있으면 'parameter is empty' 출력
+
+   - EL표현식: ${ 영역명.값  }  => $ { 값 }(X) -> 붙여서 써야함
+    - 대소문자 구분
+	- 사용할 수 있는 값: 각 4개 영역에 있는 값, 파라메터로 들어온 값, cookie
+	- EL에서 영역명이 생략되면 참조하는 순서
+	 pageScope -> requestScope -> sessionScope -> applicationScope
+	- Map(객체)에 값을 저장후 호출방법
+	  ${ pageScope.map.key }
+	  ${ map.key }
+	  ${ map['key'] }
+	  ${ map["key"] }
+	  * 값을 저장하는 객체에 무조건 getter/setter 필요
+	     -> getter가 없으면 호출시 에러 발생
+
+- JSTL(JSP Standard Tag Library)
+	: Java의 명령을 tag형식으로 정의해놓은 라이브러리
+	  JSTL내에서 사용되는 값은 EL표현식을 사용함
+
+	core: if, forEach, choose(제어문)
+	fmt: 숫자(통화단위 포함), 날짜형식
+	fn: substring, replace, ...
+
+  - int형 setAttribute로 저장 시 Integer 객체로 저장(auto-boxing)
+
+  - fmt
+   - 숫자/통화
+    <fmt:formatNumber value = "${ pageScope.변수 }"/>
+    <fmt:formatNumber value = "${ 변수 }" type="currency"/> -> 현재 통화
+
+   - 날짜
+    <fmt:formatDate value = "${ today }" />
+    <fmt:formatDate pattern = "YYYY년MM월dd일 HH:mm:ss" 
+    										value = "${ today }" />
+  - fn
+   ${ fn:substring(str_date, 0, 10) } -> substring 함수
+
+  - core 라이브러리 (forEach, if..)
+   - forEach
+    
+  	<c:forEach var="i" begin="1" end="5" step = "1">
+		${ pageScope.i } <br>
+	</c:forEach>
+    - 임시변수 i는 항상 pageContext에 저장
+
+    - 배열 출력(개선 루프)
+
+     <c:forEach var = "var" items = "${ array }">...</c:forEach>
+     - items: 배열, ArrayList, Set...
+     - <c:forEach ... varStatus = "i">
+      -> i.count: 1, 2, 3, 4..
+      -> i.index: 0, 1, 2, 3..
+
+   - if
+    <c:if text="조건식">...</c:if>
+
+  * &nbsp; -> 공백 문자
+  
+  - Servlet or JSP 페이지 이동방법
+
+   1. Redirect
+    user -> a.jsp request(요청처리) -> response(응답처리) -> user ->
+     b.jsp request
+    - 클라이언트 url 변경 o -> 최종 페이지 정보 알 수 있음
+    - 새로운 request 생성
+    - ex) 회원가입 후 목록 이동
+
+   2. Dispatcher
+    user -> a.jsp request -> response -> forward request -> b.jsp
+    - 서버 내부에서 호출
+    - 클라이언트 url 변경 X 
+    - 첫번째 받는 객체는 거의 jsp가 아닌 Servlet
+    - request와 response 공유
+    - ex) 데이터베이스 조회
+
+   - Redirect
+    <% response.sendRedirect("file.jsp"); %> -> file.jsp로 이동
+
+   - Dispatcher
+    <% 	RequestDispatcher disp = 
+             request.getRequestDispatcher("file.jsp");
+
+    // forward(호출)
+	// 현재 객체가 사용중인 request와 reponse를 그대로 전달해서 호출
+	disp.forward(request, response);
+    %>
+   
+   - f.action = "file.jsp"; -> form action = "file.jsp"로 설정
+
+   - Business Logic: Data 처리 로직
+     Presentation Logic: 화면출력(UI) 로직
+
+   - 디자인 패턴
+     - 모델1 Architecture => 데이터 처리, UI를 한번에 처리하는 로직
+     - 모델2 Architecture => 비즈니스 로직, UI 로직 처리를 모듈화 시킨 구조
+     - MVC Architecture => 모델 2의 Controller를 통합시킨 구조
+
+   - 모델 2 서비스 요청 과정
+    user 서비스 요청(html) -> 
+     request 받고 데이터 처리(Servlet) -> 
+     request 통한 Data Binding(연결) -> 
+     forward 전에 Servlet이 request에 객체 저장하고 jsp로 forward -> 
+     EL로 바로 호출 가능(jsp) ->
+     html에 UI 표현(EL)
+
+------------------------------------------------------------------------
+
+ - Tomcat Web Service(8주차/20.10.28)
+
+  - DBCP(Database Connection Pool)
+   : Database Connection를 미리 연결해서 보관 후, 호출 시 사용
+     -> 서비스 시간 단축
+
+  - 웹에서 DB 사용시
+   - context.xml -> META-INF 이동
+   	                Web.xml 실행 후 context.xml 실행
+   	                Database의 Connection 정보 저장
+   	                -> url="...:1521:urcl" => "...:1521:xe"로 변경(버전)
+   	                -> username, password 확인
+   	                -> maxWait="-1" => "1" 로 변경(대기시간)
+   	                -> maxActive: 최대 Connection 생성 개수
+   	                -> factory: (factory-pattern) 
+   	                		   -> username, password,..
+   	                	       정보를 통해 BasicDataSourceFactory 
+   	                	       객체생성. 
+   	                	       -> BasicDataSource 생성
+   	                	          : Database Connection 정보들
+   	                -> name: 생성된 BasicDataSource에 이름을 붙여 
+   	                         호출할 때 사용 (JNDI)
+   	                   * JNDI: 생성된 자원 정보를 이름을 통해서 검색 
+   	                           획득하는 기술
+   	                   BasicDataSource -> 클래스
+   	                   DataSource -> 인터페이스
+   	                   			  -> BasicDataSource로 구현 후 사용자에게 제공
+   	                * MY-SQL이랑 정보틀림
+
+
+   - lib/...jar 파일 4개 -> WEB_INF/lib 이동
+     - commons-collections : dbcp 관리 라이브러리 (collection 방식)
+     - commons-dbcp: dbcp 소스 라이브러리
+     - commons-pool: dbcp pool 라이브러리
+     - ojdbc14: 오라클 데이터 베이스 라이브러리
+   * apache.org - 대부분의 자바 관련 라이브러리
+
+  * Web Project = WebContext
+
+  - DB를 연동한 웹 서비스 과정
+   - DBService
+   - Servlet
+   - JSP
+   - Vo
+   - Dao
+    => 유저 서비스 요청(html) 
+   	  -> DBService에서 Connection 얻어옴 
+   	  -> Dao 에서 DB에 관한 요청정보 얻어옴
+   	  -> Servlet에서 Dao가 처리한 정보 얻어옴
+   	  -> JSP로 요청정보 forward
+   	  -> JSP에서 요청사항 UI 출력
+   	=> 1. User service request -> Dao
+   	   2. Dao -> DBService
+   	   3. DBService -> Oracle Connection
+   	   4. Oracle -> Dao
+   	   5. Dao -> Servlet
+   	   6. Servlet -> JSP forward
+   	   7. JSP -> 유저
+
+  - DBSerive 클래스
+   - single-ton 객체 생성
+   - 생성자 생성 -> private(외부에서 직접 생성 x)
+     - 
+		try {
+			// JNDI를 이용해서 자원정보를 획득
+			// 1. JNDI 처리 객체 생성
+			// Javax.naming
+			InitialContext ic = new InitialContext();
+			
+			// 2. Context 정보 얻어오기
+			// Javax.naming
+			// context.xml 정보 얻어옴
+			// 				-> Object => Context 객체로 캐스팅
+			//                           => BasicDataSource(클래스)
+			Context context = (Context) ic.lookup("java:comp/env");
+			// "java:comp/env" -> context.xml 위치에 대한 상수
+
+			// 3. DataSource 정보 획득(등록된 name을 이용해서 검색)
+			// 얻어온 정보 -> Object => DataSource 객체로 캐스팅
+			ds = (BasicDataSource) context.lookup("jdbc/oracle_test");
+			
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	 - 
+	 	// Connection 가져오는 메소드 정의
+		// Java.sql
+		public Connection getConnection() throws SQLException {
+			return ds.getConnection();
+		}
+
+  - Servlet(Action.jsp)
+
+  		// Dispatcher(forward) -> 모델 2
+		// @WebServlet("/dept/list.do") -> dept/: dept 폴더 내
+		String forward_page = "...jsp";
+		RequestDispatcher disp = 
+						request.getRequestDispatcher(forward_page);
+		disp.forward(request, response);
+
+  - JSP
+   - request 받은 내용 표시
+
+  - Vo
+
+   - DB의 Column명 == Vo의 속성명 == 입력 시 Parameter명 (HTML)
+   - 변수 getter/setter 생성
+
+  - Dao
+
+   - single-ton 객체 생성
+   - 생성자 private화
+   - 템플릿을 이용해 CRUD 메소드 생성
+
+  - Database 사용 환경설정
+
+   - DBService -> service package
+   - context.xml -> META-INF
+   - commons-collections.jar ] => WEB-INF
+   - commons-dbcp.jar        ] 
+   - commons-pool.jar        ] 
+   - ojdbc14.jar             ]
+
+  - ${ pageContext.request.contextPath }
+  - 현재 WebContent 경로를 알아내는 방법(절대경로)
+    : ${ pageContext.request.contextPath }
+      -> <link rel="stylesheet" 
+    	  	   href="${ pageContext.request.contextPath }/...css">
+      - 유지보수가 편함
+
+  - <form> 안에 전송할 값이 없을 경우
+    <input type = "hidden" name = "idx" value = "${ vo.idx }">
+    -> 화면상에 보이지 않는 값을 추가
+
+  - f.submit(); -> <form> 태그안에 있는 정보들을 전송 - 주소창에 쿼리
+
+  - 입력, 수정, 삭제 정보처리 (Servlet)
+  	ex) 입력 Action
+
+	// 1. 수신인코딩 설정
+	request.setCharacterEncoding("utf-8");
+	
+	// 2. Parameter 받기
+	// name=홍길동&kor=11&eng=22&mat=33
+	String name = request.getParameter("name");
+	// Web Parameter 정보는 모두 String
+	int kor = Integer.parseInt(request.getParameter("kor"));
+	int eng = Integer.parseInt(request.getParameter("eng"));
+	int mat = Integer.parseInt(request.getParameter("mat"));
+	
+	// 3. SungVo 포장
+	SungVo vo = new SungVo(name, kor, eng, mat);
+	
+	// 4. DB insert
+	int res = SungTBDao.getInstance().insert(vo);
+	
+	// 5. 목록보기로 이동: 클라이언트측에 재접속 요청정보 전송
+	response.sendRedirect("list.do");
+------------------------------------------------------------------------
+
+ - Tomcat Web Service(8주차/20.10.29)
+
+  - 방명록 페이지 작성
+
+  * SQL
+  	- sequence 사용하지 않고 일련번호 추가하는 방법(Oracle이외 DBMS)
+  	  -> (select nvl(max(idx),0)+1 from visit) => inline view
+  	  ex)	
+	  	  	insert into visit values(
+				(select nvl(max(idx),0)+1 from visit), 
+				'일길동',
+				'내가 1등이네',
+				'1234',
+				'192.168.7.13',
+				sysdate,
+				sysdate
+			);
+
+  - textarea: \r\n -> HTML: <br>
+    -> content = content.replaceAll("\r\n", "<br>");
+    -> vo.setContent(content);
+
+------------------------------------------------------------------------
+
+ - Tomcat Web Service(8주차/20.10.30)
+
+  - 필요한 파라미터만 전송
+   -> 자바스크립트 location 이용
+	  location.href = "delete.do?idx=" + f.idx.value; 
+	  <-> f.submit(): form 태그 정보 전부 전송
+
+  - DML(delete, update, insert..) 처리 후 forward 거의 사용하지 않음
+
+  - Dao의 res
+   res = pstmt.executeUpdate();
+   ...
+   return res;
+   => 처리된 행수(res가 0이면 실패, 1이상이면 성공)
+
+  - forward로 보낸 parameter를 jsp에서 사용
+    -> value = "${ param.idx }"
+
+  - location.href = "": 자신 호출(수정된 데이터 전의 데이터로 호출)
+
+  - Ajax(Asynchronous Javascript & XML)
+   
+    : 자바스크립트를 통한 통신기술
+      동기/비동기 통신가능
+      전달 데이터 유형: Text, XML, JSON
+      background 통신(browser을 통한 통신이 아닌)
+
+      동기: 유저가 요청한 내용을 수신할때까지 대기
+      비동기: 유저가 요청할 내용을 송신하고 수신하기 전까지 자신의 일을 함
+
+  - Ajax 구조
+
+   1.XMLHttpRequest 객체얻기
+	var  xhr;
+	if(window.ActiveXObject) // Window Explorer면
+		xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	else if(window.XMLHttpRequest) // 기타브라우져일 경우
+		xhr = new XMLHttpRequest();
+
+	2.CallBack(리턴받을 함수) 설정
+		xhr.onreadystatechange = res
+		여기서 res()는 자바스크립트 함수임
+
+	3.작업요청 지정(GET/POST)
+		- open(전송방식,요청페이지,비동기지정(true))
+
+		- GET방식일 경우
+			xhr.open("GET","ex.jsp?no=3&no2=5",true);
+			xhr.send(null);
+
+		- POST방식일 경우
+			xhr.open("POST","ex.jsp",true);
+			xhr.send("no=3&no1=5");
+	    
+	4.res()함수 호출시 상태값
+
+		var code = xhr.readyState;
+			0 : uninitialize
+			1 : loading
+			2 : loaded
+			3 : interactive
+			4 : complete
+		var status = xhr.status;
+			200 : complete
+			404 : Not Found
+			500 : Syntax Error
+
+	5.데이터 수신
+	 function res()
+	 {
+	        if(xhr.readyState==4 && xhr.status==200)
+	        {
+				//Text Data 수신시
+				var data = xhr.responseText;
+
+			    //JSON코드 받을시에는 반드시 eval()함수를 사용해야한다.
+			    var json = eval(xhr.responseText);
+				
+				//Xml Data 수신시
+				var data = xhr.responseXML;
+	        }
+	 }
+
+	cf)자바스크립트에서 한글처리
+	   encodeURIComponent(str)
+
+	- Javascript Ajax
+	 * 1~4번을 통합한 함수:sendRequest(url, param, callBack, method)
+	  
+	 var xhr = null;
+
+	function createRequest(){
+		if(xhr!=null)return;
+		if(window.ActiveXObject)
+			xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		else
+			xhr = new XMLHttpRequest();
+	}
+
+
+	function sendRequest(url, param, callBack, method){
+		createRequest();
+		var httpMethod = 
+		(method!='POST' && method!='post')?'GET':'POST';
+		
+		var httpParam = 
+		(param==null || param == '')?null:param;
+		
+		var httpURL = url;
+		
+		//요청 방식이 get방식이고, 전달할 파라미터 값이 있다면
+		//url경로를 제작 해야 한다.(.../test.jsp?ch=123)
+		if(httpMethod == 'GET' && httpParam != null)
+			httpURL = httpURL+"?"+httpParam;
+		
+		xhr.open(httpMethod, httpURL, true);
+		xhr.setRequestHeader("Content-Type",
+		  "application/x-www-form-urlencoded");
+		xhr.onreadystatechange = callBack;
+		
+		xhr.send(httpMethod == 'POST'?httpParam:null);
+	}
+
+	- jQuery Ajax
+	 - JSON(Javascript Object Notation)표기법
+	  서로 다른 프로그램에서 데이터를 교환하기 위한 표기법
+	  읽기/쓰기가 쉽다(배열형식)
+	  
+	  표현법
+	  1) 이름/값 형식으로 하나의 쌍으로 인식된다.(Map구조)
+	  2) JSON -> {이름:값,이름:값,.....};
+	     ex) var cnt = {c1:First,c2:Second,c3:Third}
+	         var c1_value = cnt.c1; ( First가 들어감 )
+	         var c2_value = cnt.c2; //Second
+	         var c3_value = cnt['c3']; //Third값
+	     단순배열표현
+	     배열 -> [값1,값2,값3];
+
+	 ->
+ 	//jQuery Ajax 요청
+	$.ajax({
+		// 생략하면 GET방식
+		type: "GET", 			  
+		
+		url:"gugudan.do",
+		
+		// 수신데이터 타입(html, text, xml, json) 생략하면 html
+		dataType: "json", 	 
+
+		// 송신 데이터(파라미터) 
+		data:{"dan":dan},		  
+
+		// result_data: 서버가 넘겨준 데이터
+		// 위의 데이터와는 다름, 수신 데이터
+		success: function(result_data){
+			$("#disp").html(result_data);
+		},
+
+		// 에러 발생 시
+		error: function(err){
+				alert(err.responseText);
+		} 						  
+	});
+
+   - Project 복사
+    - 복사 + 붙여넣기 X -> Server에서 같은 프로젝트로 인식
+    -> Project Export -> WAR file
+    -> Export Soruce files check
+    -> 폴더 선택 -> Finish
+    -> Import -> WAR file
+    -> 이름바꾸기 -> finish
+    * project source는 복사안됨 ex)DB
+
+   - 비밀번호 확인 Servlet(Ajax 이용)
+
+	// 1. 수신인코딩 설정
+	request.setCharacterEncoding("utf-8");
+	
+	// 2. Parameter 받기
+	int idx = Integer.parseInt(request.getParameter("idx"));
+	String c_pwd = request.getParameter("c_pwd");
+	
+	// 3. idx에 해당되는 게시물 1건을 얻어옴
+	VisitVo vo = VisitDao.getInstance().selectOne(idx);
+	
+	// 게시물 비밀번호 == 입력된 비밀번호
+	boolean bSame = vo.getPwd().equals(c_pwd);
+	
+	// {"result": bSame} = {"result": true} or {"result": false}
+	String json = String.format("{\"result\":%b}", bSame);
+	* \" => Java에서 문자열 "" 표시
+
+	// 응답처리
+	response.setContentType("text/json; charset=utf-8;");
+	response.getWriter().print(json);
+
+	* 주소창에서 응답값 확인
+	 -> http://localhost:9090/2020_1030_Visit_Ajax/visit/check_pwd.do?idx=3&c_pwd=1234
+
+------------------------------------------------------------------------
+
+ - Tomcat Web Service(9주차/20.11.02)
+
+  - 버튼 비활성화
+   -> <input type = "button" ... disabled="disabled">
+   -> 버튼 활성화(jQuery)
+      -> $(selector).attr("disabled", false);
+
+  - 읽기전용으로 변경(jQuery)
+   -> $(selector).attr("readonly", true);
+
+  - 주소 검색 API (Daum)
+   -> 구글 검색창에 다음 주소검색 입력
+   -> postcode... 사이트 들어감
+   -> 
+
+   // 소스 script
+   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   // 코딩 script
+	<script>
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+	        }
+	    }).open();
+	</script>
+
+   -> 복사해서 소스 script 따로, 코딩 script 따로 붙여넣기
+   -> 코딩 script는 버튼을 눌렀을때 호출한 함수 내에 붙여넣기
+   * data = {  "zonecode":"08768", 
+			   "address": "서울 관악구", 
+			   "roadAddress":"도로명주소", 
+			   "jibunAddress":"지번주소" ... }
+		  => json 타입으로 데이터 받음
+
+  - input type = text 크기 조정 
+    -> <input name = "..." size = "..">
+
+  - input 태그 name 속성과 id 속성
+
+   - id
+     -> jQuery
+     -> Ajax를 통해 servlet과 통신
+     -> 결과값 reponse.getWriter().print()를 통해 전송 (in Servlet)
+        or Redirect or Dispatcher 방식으로 전송
+
+   - name
+     -> javascript
+     -> function에서 submit을 통해 servlet과 통신(form태그)
+     -> 결과값 Redirect or Dispatcher 방식으로 전송 (to jsp)
+
+   * javascript와 jQuery 혼용해서 사용가능
+
+------------------------------------------------------------------------
+
+ - Tomcat Mybatis(9주차/20.11.03)
+
+  - 입력창에서 키를 뗄때마다 함수실행
+    $(selector).keyup(function(){});
+                keydown -> 키를 누를때마다
+
+  - 라디오 버튼 체크값 조정
+    $(selector).attr("checked", true); -> selector에 체크
+
+  - ORM(Object Relationship Mapper)
+    : DB와 객체를 연결시켜주는 Framework
+      DB <=> Object
+
+      종류: Hibernate (ORM성격이 짙음, SQL문장 X)
+      		Mybatis (SQL Mapper)
+      		   -> ibatis 2.x 버전
+      		   -> mybatis 3.x 버전
+
+   * Mybatis 참고사이트: mybatis.org
+   * 외부 라이브러리 사이트: https://mvnrepository.com/
+
+  - MyBatis을 사용하기 위한 설정
+
+   - WEB-INF -> lib에 라이브러리 5개
+   - META-INF -> context.xml
+   - src -> config.mybats -> sqlMapConfig.xml
+     			-> <environments>...</environments>: Database옵션 "JNDI"
+        			-> value="java:comp/env/jdbc/..."
+        			-> context.xml의 name="jdbc/..."와 같아야함 "DBCP"
+     			-> <mappers>...</mappers>: mapper 옵션(mapper 등록, 삭제)
+
+   			config.mybatis.mapper -> ... .xml
+   								     -> mapper 설정 (namespace, id)
+   								     -> SQL문 작성, 미완성된 코드는 작성 X
+   								     -> mapper당 xml 파일 하나씩 생성
+   								     -> SQL문을 실행해 Vo로 객체로 
+   								       포장해주는 기능
+		 =>
+			<!-- <select>: 무조건 resultType or resultMap 사용
+				 resultType="vo.SawonVo" => 결과행을 SawonVo로 포장 -->
+			<select id = "sawon_list" resultType = "vo.SawonVo">
+				select * from sawon
+			</select>
+
+   			service -> MyBatisConnector.java
+   					   -> sqlMapConfig.xml의 정보를 읽어옴
+   					   	  SqlSessionFactory factory (mybatis 객체 -> 
+   					   	  SqlSession)를 생성해서 위의 정보를 연동 후 리턴
+   					   	  (DBSerive와 비슷)
+
+   			dao -> ...Dao.java
+   				   -> MyBatisConnector를 이용해 mybatis객체 생성
+   				   	   SqlSessionFactory factory;
+   				   	   factory = MyBatisConnector.getInstance().getSqlSessionFactory();
+
+   				   	  CRUD 메소드 생성 (mybatis 객체 활용)
+   				 =>
+		   			// 1.SqlSession을 획득: 작업 세션 획득
+					SqlSession sqlSession = factory.openSession();
+				
+					// 2.작업수행                                        //                         "namespace.mapper_id"
+					list = sqlSession.selectList("sawon.sawon_list");
+				
+					// 3.작업 세션 반환(닫기): Connection 반환
+					sqlSession.close();
+
+   			vo -> ...Vo.java
+   				  가급적이면 데이터베이스 컬럼명 == Vo 속성명
+   				  -> DB 칼럼명 != Vo 속성명
+   				  	 1. 데이터베이스 컬럼명 as 속성명으로 바꾸어야 함
+   				  	 <select id = "gogek_list" resultType ="vo.GogekVo">
+						select deptno as no,
+							   dname as name,
+							   loc as position
+						 from gogek
+					 </select>
+
+   				  	 2. resultMap 속성 활용
+
+   				  	 <resultMap type = "vo.DeptVo2" id = "deptMap">
+   				  	 	<result property = "no" column = "deptno">
+   				  	 	...
+   				  	 </resultMap>
+
+   				  	 <select id = "dept_list3" resultMap = "deptMap">
+   				  	 	select * from dept
+   				  	 </select>
+
+   * xml: 확장된 마크업 언어
+  		  주로 환경설정으로 사용
+
+   - SqlSessionFactory -> JNDI, Mapper
+   					   -> DB설정, Mapper 설정
+
+   - Mybatis 라이브러리를 통한 정보처리 과정
+
+------------------------------------------------------------------------
+
+ - Tomcat 검색 서비스(9주차/20.11.04)
+
+  - sqlMapConfig.xml
+    -> <dataSource type="JNDI">
+    			   type="pool"
+    			   type="dbcp"
+
+  - select 태그에서 값이 바뀔때마다 함수 호출
+    -> $(selector).change(function(){});
+
+  - Mybatis에 parameter 전달 과정
+    (Dao)
+  		// 2. 작업수행                                        	
+			 				 "namespace.mapper_id", 전달인자(parameter)
+		list = sqlSession.selectList("sawon.sawon_list_deptno", deptno);
+
+    (mapper.xml)
+
+    	<!-- Mybatis에서 parameter 변수표현 #{변수명} 
+		 parameter가 단일타입이면 변수명은 아무거나 넣어도 됨 -->
+  	<select id = "sawon_list_deptno" resultType = "vo.SawonVo" 
+			parameterType="int">
+		select * from sawon where deptno = #{ deptno }
+	</select>
+
+  - 카테고리명 작성 -> 회사명.패키지명.클래스
+                      com.increpas.visit.vo
+                      -> <select id = "visit_list" 
+                      	  resultType="com.increpas.visit.vo"> ... </selelct)
+
+	-> Type의 별칭을 지정
+	    (sqlMapConfig)
+
+	     <!-- configuration 태그 밑 -->
+		 <typeAliases>
+			 <typeAlias type="vo.VisitVo" alias = "visit"/>
+		 </typeAliases>
+
+  - Mybatis DML 명령처리(insert, update, delete..)
+
+  	(Dao)
+	
+	// openSession(true): auto commit(설정)
+  	// SqlSession sqlSession = factory.openSession(true);
+	SqlSession sqlSession = factory.openSession();
+
+	res = sqlSession.insert("visit.visit_insert", vo);
+	
+	// DML 명령 수행시 무조건 실행
+	sqlSession.commit();
+	sqlSession.close();
+
+	(Mapper.xml)
+	<!-- DML명령은 result명령 없고 parameter명령만 있음 -->
+	<!-- #{ name } => vo.getName() -->
+	<insert id = "visit_insert" parameterType = "vo.VisitVo">
+		insert into visit values(
+			(select nvl(max(idx),0) + 1 from visit), 
+			#{ name },  
+			#{ content }, 
+			#{ pwd }, 
+			#{ ip }, 
+			sysdate, 
+			sysdate)
+	</insert>
+
+	- Transaction
+	  : All or Nothing
+	    모두 성공해야 데이터가 바뀜 = 하나라도 실패 X
+	    (insert, update, delete)에만 해당
+
+  - 다른 페이지로 값을 넘길때 특수문자가 포함되었을 때
+    -> 깨짐
+    -> 인코딩
+       -> encodeURIComponent(search_text, "utf-8")
+
+  - 검색 서비스
+  
+    - 과정
+      - jsp에서 servlet으로 요청 정보 전송
+
+      location.href = "list.do?search=" + search + 
+					"&search_text=" + encodeURIComponent(search_text, "utf-8");
+
+	  - servlet에서 정보 수신 후 Dao 수정
+
+	  	// 1. 수신인코딩 설정
+		request.setCharacterEncoding("utf-8");
+		
+		// 2. parameter 수신
+		String search = request.getParameter("search");
+		String search_text = request.getParameter("search_text");
+		
+		if(search == null) search = "all";
+		Map map = new HashMap();
+		
+		// 전체검색이 아니면
+		if(!search.equals("all")) {
+			
+			if(search.equals("name")) {
+				map.put("name", search_text);
+			}else if(search.equals("content")) {
+				map.put("content", search_text);
+			}else if(search.equals("name_content")) {
+				map.put("name", search_text);
+				map.put("content", search_text);
+			}
+			
+		}
+		
+		// 목록 가져오기
+		List<VisitVo> list = VisitDao.getInstance().selectList(map);
+
+	  - xml에 동적 쿼리 추가
+
+	  	<!-- 조건별 조회 -->
+		<!-- parameter: Map
+						key "name" or "content"
+		 -->
+		<select id = "visit_list_condition" 
+				parameterType="java.util.Map" 
+				resultType="vo.VisitVo">
+
+			select * from visit
+			<trim prefix = "where" prefixOverrides="or">
+				<if test="name!=null"> 
+					name like '%' || #{ name } || '%'
+				</if>
+				<if test="content!=null"> 
+					or content like '%' || #{ content } || '%'
+				</if>
+			</trim>
+			order by idx desc
+		</select>
+
+    - <trim prefix = "...">...</trim>: 내용이 있으면 "..." 추가
+    - <trim ... prefixOverrides = "..."> ... </trim>: "..."로 시작하면 "..."제거
+
+------------------------------------------------------------------------
+
+ - Tomcat Cookie, Session(9주차/20.11.05)
+
+  - Cookie
+    : 웹사이트의 방문기록을 "클라이언트"에 저장 -> 보안이 취약
+      사용자와 웹사이트 사이를 매개해 주는 정보
+      -> 용량에 제한이 있고 보안이 취약
+
+    - 종류: Session 쿠키, Persistence 쿠키
+	  - Session Cookie: 브라우저가 떠있는 동안에 저장되는 쿠키
+					    브라우저를 끄면 소멸
+	  - Persistence Cookie: 파일로 저장, 사용자가 쿠키를 삭제하거나 쿠키
+	  						설정값이 만료된 경우 소멸
+
+	- 사용방법: jsp html태그 위에 선언
+  	
+  	//	Session Cookie		   name  value
+	Cookie cookie = new Cookie("A", "A.jsp");
+	// Persistent Cookie 
+	cookie.setMaxAge(60); // sec단위, 생략하면 Session Cookie
+	// Cient측으로 전달
+	response.addCookie(cookie);	
+
+	- 쿠키 확인
+	  -> Chrome -> F12 -> Application
+	  -> Expire.. : 쿠키 종류
+
+	- 쿠키 정보 읽어오기
+
+	// Cookie 정보를 읽어온다
+	Cookie [] cookie_array = request.getCookies();
+	StringBuffer sb = new StringBuffer("<h3>최근 방문 페이지</h3><br><br>");
+	// 처음 접속하면 쿠키는 null
+	if(cookie_array != null){ 
+		for(Cookie c: cookie_array){
+			
+		 System.out.printf("[%s]: [%s]\n", c.getName(), c.getValue()); 
+
+		}
+	}
+
+  - Session
+    : 웹사이트의 방문기록을 "서버"에 저장 -> 쿠키보다는 보안에 유리
+      사용자와 웹사이트 사이를 매개해 주는 정보
+      브라우저당 유저에 대한 세션이 하나씩 생김 -> 서버에 부담이 될 수 있음
+      -> 처음 접속시 유저에 대해 ID 발급(Cookie에 저장)
+      -> 유저만 사용할 수 있는 공간 할당(Session)
+
+    (JSTL)
+    // Servlet에서 세션정보를 구할때
+	String session_id1 = request.getSession().getId();
+	
+	// 위와 동일
+	HttpSession my_session = request.getSession();
+	String session_id1 = my_session.getId();
+
+	// JSP 내장객체(session객체는 미리 생성되있음)
+	String session_id2 = session.getId();
+
+	* Session은 이미 만들어진 객체(사용자가 만드는게 아님)
+
+	// 세션 지속시간 변경
+	// 지정된 시간동안 아무것도 하지 않을 경우에만 소멸
+	session.setMaxInactiveInterval(60); // 1분
+
+	// session binding
+	// 접속중인 유저 ID에 값을 저장
+	session.setAttribute("id", value);
+
+	(html)
+	<c:if test="${ not empty sessionScope.id }">
+	ID가 ${ id }인 유저가 로그인 되어있습니다
+	</c:if>
+	-> 세션공간에 저장되있는 id가 비어있지 않았을때
+
+  - 파일 업로드 서비스
+    - http://servlets.com/ (다운로드 패키지 사이트)
+    -> COS File Upload Library
+    -> cos-20.08.zip 다운로드
+    -> 압축풀기
+    -> lib/cos.jar -> 프로젝트 WEB-IN/lib에 복사
+
+  -  FileUpload시 설정사항 
+	 1. method="POST"
+	 2. enctype="multipart/form-data"
+
+  - 파일 업로드 서비스 과정
+
+	(html)
+	<form method = "POST" enctype = "multipart/form-data">
+	제목:<input name = "title"><br>
+	파일:<input type = "file" name = "photo"><br>
+		 <input type = "button" value = "전송" onclick = "send(this.form);">
+	</form>
+
+	(Servlet)
+
+	// WebContent에 upload 폴더 생성 
+	// String saveDir = "C:\\WebStudy\\upload"; // (위치)
+	// 웹경로 -> 절대경로 구한다
+	// 무조건 upload
+	String webPath = "/upload/";
+	// 웹 전역(하나의 프로젝트)을 관리하는 객체
+	ServletContext application = request.getServletContext(); 
+	String saveDir = application.getRealPath(webPath); // 절대경로
+	
+	// 업로드 최대크기 지정
+	int maxSize = 1024*1024*100; // 100MB
+	
+	// 업로드정보를 읽어오는 객체(MultipartRequest)
+	// DefaultFileRenamePolicy(): 동일파일명 있을시 이름을 변경
+	MultipartRequest mr = new MultipartRequest(request, 
+											   saveDir, 
+											   maxSize, 
+											   "utf-8", 
+											   new DefaultFileRenamePolicy());
+										
+	// 업로드된 파일 정보(이름)을 얻어옴 
+	String filename = "no_file";
+	// java.io의 File 객체
+	File f = mr.getFile("photo");
+	//String original_filename = mr.getOriginalFileName("photo");
+	if(f != null){
+		filename = f.getName();
+	}
+	
+	// request => MultiPartRequest 위임
+	// => 나머지 파라미터 정보는 mr로 받아야됨 (MultipartRequest)
+	// String title = request.getParameter("title"); // 실행 안됌
+	String title = mr.getParameter("title");
+	
+	// 단 클라이언트측 ip정보는 request 이용
+	String ip = request.getRemoteAddr();
+	
+	// request binding 
+	request.setAttribute("title", title);
+	request.setAttribute("filename", filename);
+
+  	* C://Webstudy 에 있는 파일들은 편집파일
+    -> 실행파일은 따로 있음
+    -> C:\WebStudy\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\2020_1105_FileUploadTest\
+    -> 이클립스에서 다른 프로젝트를 실행하면 이 실행파일들은 다 삭제됨
+    -> 프로젝트 실행 -> Next -> Configured에 있는 프로젝트 파일들은 삭제되지않음
+
+    (jsp)
+
+    <img src = "upload/${ filename }" width = "200"><br>
+
+------------------------------------------------------------------------
+
+ - Tomcat 로그인 서비스(9주차/20.11.06)
+
+  - 프로젝트 실행: 오른쪽 클릭 -> Run as -> Run on server
+  				  Alt + Shift + X, R
+
+    - 처음에 실행되는 파일
+      -> WebContent -> index.jsp 생성 (다른 이름은 안됌)
+
+      - 기본 파일 목록(in web.xml)
+      	- welcome-file-list 태그
+      	  - index.html
+      	  - index.htm
+      	  - index.jsp
+      	  - default.html
+      	  - default.htm
+      	  - default.jsp
+      	-> 프로젝트를 실행하면 가장 먼저 실행되는 파일들
+      	-> 이 파일들을 만들거나 만든 파일을 여기에 추가
+
+    - CSS
+
+    - 부모영역보다 크면 스크롤
+      -> overflow: scroll;
+         -> overflow-y: scroll; (y축만 스크롤 추가)
+         -> overflow-x: scroll; (x축만 스크롤 추가)
+
+    - padding 속성은 크기가 늘어남
+
+    - 글자수 넘으면 ...(elipsis) 처리
+
+      	width: 110px;
+		overflow:hidden;
+    	text-overflow:ellipsis;
+   		white-space:nowrap;
+
+   		-> 110px 넘으면 ... 로 표시됨
+
+    - jsp
+
+   	- 로그인 처리 과정
+
+   	 - 로그인 상태 체크
+
+   	(html)
+
+	<!-- 로그인 안된상태 -->
+	<c:if test="${ empty sessonScope.user }">
+		<input type = "button" value = "로그인" 
+			   onclick = "location.href = '../member/login_form.do'">
+	</c:if>
+	<!-- 로그인이 된 상태 -->
+	<c:if test="${ not empty sessonScope.user }">
+		<input type = "button" value = "로그아웃">
+	</c:if>
+
+	(jQuery)
+
+	//로그인 상태 체크
+	if("${ empty user }"=="true"){
+		
+		if(!confirm("로그인 후에 등록가능합니다\n로그인 폼으로 이동하시겠습니까?")) return;
+		
+		//로그인 폼으로 이동 => 현재경로: /photo/list.do
+		location.href = "../member/login_form.do"; 
+		// MemberLoginFormAction
+		return;
+	}
+	
+	// 사진 입력폼으로 이동 /photo/insert_form.do
+	location.href = "insert_form.do"; //PhotoInsertFormAction
+
+	 - 로그인 정보 전송
+
+	 (jsp)
+
+	 <form> 태그로 입력 데이터를 javascript에서 간단한 검사 후 
+	 servlet으로 전송
+
+	 - 로그인 실패시
+
+	(Servlet)
+
+	request.setCharacterEncoding("utf-8");
+	String m_id = request.getParameter("m_id");
+	String m_pwd = request.getParameter("m_pwd");
+	
+	// m_id에 해당되는 회원정보 1건을 얻는다
+	MemberVo user = MemberDao.getInstance().selectOne(m_id);
+	
+	// 아이디가 틀린 경우
+	if(user==null) {
+		response.sendRedirect("login_form.do?reason=fail_id");
+		return;
+	}
+	
+	// 비밀번호가 틀린 경우
+	if(!user.getM_pwd().equals(m_pwd)) {
+		response.sendRedirect("login_form.do?reason=fail_pwd");
+		return;
+	}
+
+	(jQuery)
+
+	$(document).ready(function(){
+	
+	// 0.1초후에 show_message() call
+	setTimeout(show_message, 100);
+		
+	});
+
+	function show_message(){
+		
+		// login_form.do?reason=fail_id
+		// login_form.do?reason=fail_pwd
+		
+		if("${ param.reason eq 'fail_id'}" == "true"){
+			alert("아이디가 틀립니다");
+			return;
+		}
+		
+		if("${ param.reason eq 'fail_pwd'}" == "true"){
+			alert("비밀번호가 틀립니다");
+			return;
+		}		
+		
+	}
+
+	 - 로그인 성공
+
+	(Servlet)
+
+	// 로그인 성공 => 유저 정보를 세션에 넣는다
+	// 세션구하기
+	HttpSession session = request.getSession();
+	// session binding
+	session.setAttribute("user", user);
+	
+	// 메인페이지로 이동
+	response.sendRedirect("../photo/list.do");
+
+	(jsp)
+	<!-- 로그인이 된 상태 
+		  MemberVo user -->
+	<c:if test="${ not empty sessionScope.user }">
+		${ user.m_name }님 환영합니다
+		<input type = "button" value = "로그아웃">
+	</c:if>
+
+
+	 - 로그아웃
+
+	(jsp)
+	
+	<input type = "button" value = "로그아웃"
+		   onclick = "location.href = '../member/logout.do'">
+
+	(servlet)
+
+	// 로그아웃: 세션에서 user정보를 삭제
+	HttpSession session = request.getSession();
+	session.removeAttribute("user");
+
+	response.sendRedirect("../photo/list.do");
+
+	- 파일 업로드 과정
+
+	 - 파일 입력 (Serlvet)
+
+	 request.setCharacterEncoding("utf-8");
+	
+	// 절대경로
+	String webpath = "/upload/";
+	ServletContext application = request.getServletContext();
+	String saveDir = application.getRealPath(webpath);
+	
+	// 최대크기
+	int maxSize = 1024*1024*100;
+	
+	// 업로드 객체
+	MultipartRequest mr = new MultipartRequest(request, saveDir, maxSize, "utf-8", new DefaultFileRenamePolicy());
+	
+	String p_filename = "no_file";
+	
+	// 파일 정보 가져오기
+	File f = mr.getFile("p_photo");
+	if(f != null) {
+		p_filename = f.getName();
+	}
+	
+	String p_title = mr.getParameter("p_title");
+	String p_content = mr.getParameter("p_content");
+	
+	// ip
+	String p_ip = request.getRemoteAddr();
+	
+	// 접속한 유저의 idx 얻기
+	HttpSession session = request.getSession();
+	MemberVo user = (MemberVo) session.getAttribute("user");
+	int m_idx = user.getM_idx();
+	
+	PhotoVo vo = new PhotoVo(p_title, p_content, p_filename, p_ip, m_idx);
+	
+	PhotoDao.getInstance().insert(vo);
+	
+	response.sendRedirect("list.do");
+
+	 - 파일 출력(jsp)
+
+	<c:if test="${ not empty list }">
+	<c:forEach var = "vo" items = "${ list }">
+		<div class = "photo_div">
+			<img src = "../upload/${ vo.p_filename }">
+			<div class = "photo_title">${ vo.p_title }</div>
+			<div style = "text-align: center;">
+				<input type = "button" value = "다운">
+				<input type = "button" value = "삭제">
+				</c:if>
+			</div>
+		</div>
+	</c:forEach>
+
+------------------------------------------------------------------------
+
+ - Tomcat 검색 API, XML(10주차/20.11.09)
+
+  - 본인이거나 관리자면 활성화 
+
+	<c:if test = "${ (vo.m_idx eq user.m_idx) or 
+					 (user.m_grade eq '관리자') }">
+		<input type = "button" value = "삭제">
+	</c:if>
+
+  - 정보를 여러개 넘길때는 form 태그가 편함
+    -> 한두개는 location.href = ... + 파라미터
+
+  - 업로드된 파일 삭제(Servlet)
+
+	// 1. parameter 받기
+	int p_idx = Integer.parseInt(request.getParameter("p_idx"));
+	
+	// 2. p_idx에 해당되는 Vo얻기	
+	PhotoVo vo = PhotoDao.getInstance().selectOne(p_idx);
+	
+	// 3. 삭제할 경로얻기 & 파일 삭제
+	String path = request.getServletContext().getRealPath("/upload/");
+	System.out.println(path);
+	
+	//					  폴더 			파일
+	File f = new File(path, vo.getP_filename());
+	f.delete();
+	
+	// 4. DB delete
+	int res = PhotoDao.getInstance().delete(p_idx);
+	
+	// 5. 목록보기
+	response.sendRedirect("list.do");
+
+  - 파일 다운로드
+
+   - src/util -> FileDownlad.java 파일 필요
+   - (jsp)
+
+   	function download(p_filename){
+		// alert(p_filename + ' 다운로드');
+		
+		// 로그인 상태 체크
+		if('${ empty user }' == 'true'){
+			
+			if(!confirm("다운로드하시려면 로그인하셔야 합니다\n로그인 하시겠습니까?")) return;
+			
+			// 로그인 폼으로 이동
+			location.href = "../member/login_form.do";
+			return;
+		}
+		
+		// 파일 다운로드
+		// 자바스크립트를 통해서 한글/특수문자를 GET방식 전송시 반드시 인코딩해서 전송해야됨
+		location.href = "../FileDownload.do?dir=/upload/&filename=" + encodeURIComponent(p_filename);
+		
+	}
+
+  - 이미지 클릭시 팝업창 보여주기
+
+   - html에 팝업창과 메인창 결합
+
+   <%@include file = "photo_popup.jsp" %>
+
+   - 팝업창 숨김
+
+   	function hide_popup(){
+		$("#pop").hide();
+	}
+
+   - 팝업창 화면 중앙에 배치
+
+   	$(document).ready(function(){
+		
+		center_popup();
+
+	});
+	
+	function center_popup(){
+		
+		// 윈도우 폭/높이
+		// jQuery
+		var w = $(window).width();
+		var h = $(window).height();
+		
+		// javascript
+		// var w = window.innerWidth;
+		// var h = window.innerHeight;
+		
+		var left = w/2 - 300/2;
+		var top = h/2 - 400/2;
+		
+		// 상세화면의 윈도우를 중앙으로 배치
+		$("#pop").css("left", left + "px")
+		 			 .css("top", top + "px");
+		
+	}
+
+   - 클릭 시 팝업창 보여주기
+
+    (jsp)
+
+   	function show_popup(p_idx){
+		
+		// Ajax로 요청
+		$.ajax({
+			
+			url: "detail.do", // PhotoDetailAction
+			data: {"p_idx": p_idx}, // detail.do?p_idx=3
+			dataType: "json",		// 결과타입을 json
+			success: function(res_data){
+				
+			//	res_data = {"p_idx": 3, "p_fiename": "123.jpg", "p_title": "제목입니다"...}
+			// alert(res_data.p_title);
+			
+			$("#photo_img").attr("src", "../upload/" + res_data.p_filename);
+			$("#photo_title").html(res_data.p_title);
+			$("#photo_content").html(res_data.p_content);
+			$("#photo_regdate").html(res_data.p_regdate.substring(0, 10));
+			
+			center_popup(); // 중앙배치
+			$("#pop").show();
+			
+			},
+			error: function(err){
+				alert(err.responseText);
+			}
+			
+		});
+		
+		
+	}
+
+	(Servlet)
+
+	// parameter 받기
+	int p_idx = Integer.parseInt(request.getParameter("p_idx"));
+	
+	// p_idx에 해당되는 객체정보 1건 얻어오기
+	PhotoVo vo = PhotoDao.getInstance().selectOne(p_idx);
+	
+	// vo => JSON으로 생성
+	String json = vo.getJSONString();
+	//System.out.println(json);
+	
+	// 응답처리
+	response.setContentType("text/json; charset = utf-8;");
+	response.getWriter().print(json);
+
+	(Vo)
+
+	public String getJSONString() {
+		// TODO Auto-generated method stub
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append(String.format("\"p_idx\":%d,", p_idx));
+		sb.append(String.format("\"m_idx\":%d,", m_idx));
+		sb.append(String.format("\"p_title\":\"%s\",", p_title));
+		sb.append(String.format("\"p_content\":\"%s\",", p_content));
+		sb.append(String.format("\"p_ip\":\"%s\",", p_ip));
+		sb.append(String.format("\"p_filename\":\"%s\",", p_filename));
+		sb.append(String.format("\"p_regdate\":\"%s\"", p_regdate));
+		sb.append("}");
+		return sb.toString();
+	}
+
+  - onclick = "del('${ vo.p_idx }');"
+    -> PHP 서버에서 $를 쓰기때문에 ''를 써주는 것이 좋음
+
+
+  - XML
+    : 확장된 Markup 언어
+      tag를 사용자가 정의해서 사용할 수 있다
+      root element는 반드시 한개만 존재
+	  용도: Data운반수단/ 환경설정파일
+
+   - dtd: Document Type Definition
+     -> 이 파일에 정의된 요소만 xml에 쓸 수 있음
+
+     // *: 여러개 자식을 가질 수 있음
+    <!ELEMENT persons (person*) >  
+	<!ELEMENT person (name,age,tel) >
+		// 정의된 순서대로 입력해야함
+		<!ELEMENT name (#PCDATA)>
+			// <!ATTLIST>: 속성 정의
+			// #REQUIRED: 반드시 값이 있어야함
+			<!ATTLIST name nickname CDATA #REQUIRED>
+		<!ELEMENT age (#PCDATA)>
+		<!ELEMENT tel (#PCDATA)>	
+		    <!ATTLIST tel hometel CDATA #REQUIRED>
+
+
+	<!DOCTYPE persons SYSTEM "person.dtd">
+	<!-- Root Element(요소) -->
+	<persons>
+		<person>
+		    <!-- nickname : Attribute(속성) -->
+			<name nickname="원님">일길동</name> <!-- element -->
+			<age>33</age>
+			<tel hometel="02-111-1111">010-111-1111</tel>
+		</person>
+		<person>
+		    <!-- nickname : Attribute(속성) -->
+			<name nickname="투님">이길동</name>
+			<age>22</age>
+			<tel hometel="031-111-1111">010-222-2222</tel>
+		</person>
+		<person>
+		    <!-- nickname : Attribute(속성) -->
+			<name nickname="삼님">삼길동</name>
+			<age>55</age>
+			<tel hometel="02-555-0555">010-555-5555</tel>
+		</person>
+
+	</persons>
+
+	* http://jdom.org/ (XML Parser)
+	  -> Binaries -> JDOM 2.0.6 다운로드
+	  -> 압축풀기 -> JDOM 2.0.6
+	  -> WEB_INF/lib
+
+  - Servlet으로 파싱하기
+
+	try {
+	// http://192.168.7.12:9090/2020_1109_XmlTest/person.xml
+	
+	// XML parser(SAXBuilder) 이용
+	SAXBuilder sb = new SAXBuilder();
+	URL url = new URL("http://192.168.7.12:9090/2020_1109_XmlTest/person.xml");
+
+	// org.jdom2
+	// XML 문서정보를 읽어옴
+	Document doc = sb.build(url);
+	
+	// Root Element 구하기
+	Element root = doc.getRootElement();
+	
+	// root의 자식 Element 구하기
+	// 여기서는 person 생략가능
+	List<Element> list = root.getChildren("person");
+	
+	List<PersonVo> p_list = new ArrayList<PersonVo>();
+	
+	for(Element person : list) {
+		
+		String name = person.getChildText("name");
+		String nickname = person.getChild("name").getAttributeValue("nickname");
+		int age = Integer.parseInt(person.getChildText("age"));
+		String tel = person.getChildText("tel");
+		String hometel = person.getChild("tel").getAttributeValue("hometel");
+		
+		// XML내용 -> Vo포장 -> ArrayList 저장
+		PersonVo vo = new PersonVo();
+		vo.setName(name);
+		vo.setNickname(nickname);
+		vo.setAge(age);
+		vo.setTel(tel);
+		vo.setHometel(hometel);
+		
+		p_list.add(vo);
+	}
+	
+	request.setAttribute("p_list", p_list);
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	
+	// Dispatcher(forward)
+	// @WebServlet("/dept/list.do") -> dept/: dept 폴더 내
+	String forward_page = "person_list.jsp";
+	RequestDispatcher disp = request.getRequestDispatcher(forward_page);
+	disp.forward(request, response);
+	
+  - 네이버 검색 API
+
+   - dev.naver.com 에서 API 아이디 코드 발급
+   - 미리 작성한 MySearchUtil.java -> src/util에 복사
+   - 발급받은 아이디 패스워드 입력
+
+	String clientId = "iS4OW8fwoKgVsfTJHt_8";
+	String clientSecret = "3n1dbxRWtx";
+
+   - 수신받은 변수 확인 후 Vo 포장
+
+	ProductVo vo = new ProductVo();
+	vo.setTitle(title);
+	vo.setLink(link);
+	vo.setImage(image);
+	vo.setLprice(lprice);
+	vo.setHprice(hprice);
+	vo.setMallName(mallName);
+
+   - Serlvet
+
+	request.setCharacterEncoding("utf-8");
+	
+	int start = 1;
+	int display = 10;
+	String p_name = "Notebook";
+	
+	p_name = request.getParameter("p_name");
+	
+	if(p_name == null) {
+		p_name = "Notebook";
+	}
+	
+	List<ProductVo> p_list = MySearchUtil.search_shop(p_name, start, display);
+	
+	request.setAttribute("p_list", p_list);
+	
+	// Dispatcher(forward)
+	// @WebServlet("/dept/list.do") -> dept/: dept 폴더 내
+	String forward_page = "product_list.jsp";
+	RequestDispatcher disp = request.getRequestDispatcher(forward_page);
+	disp.forward(request, response);
+
+   - JSP
+
+   	<table border = "1" align = "center">
+		<!-- title -->
+		<tr>
+			<th>이미지</th>
+			<th>상품명</th>
+			<th>최저가</th>
+			<th>최고가</th>
+			<th>쇼핑몰명</th>
+		</tr>
+		
+		<c:forEach var = "vo" items = "${ p_list }">
+			<tr>
+				<td><img src = "${ vo.image }"></td>
+				<td><a href = "${ vo.link }">${ vo.title }</td>
+				<td><fmt:formatNumber value = "${ vo.lprice }" type = "currency"/></td>
+				<td><fmt:formatNumber value = "${ vo.hprice }" type = "currency"/></td>
+				<td>${ vo.mallName }</td>
+			</tr>
+		</c:forEach>
+	</table>
+
+------------------------------------------------------------------------
+
+ - Tomcat MVC(10주차/20.11.10)
+
+  - 상품 검색 페이지 (jsp)
+
+	function find(){
+	
+		var p_name = $("#p_name").val().trim();
+		
+		if(p_name == ''){
+			alert("검색할 상품명을 입력하세요");
+			$("#p_name").val("");
+			$("#p_name").focus();
+			return;
+		}
+		
+		var search_page = parseInt($("#search_page").val());
+		var display = parseInt($("#display").val());
+		var start = (search_page - 1) * display + 1;
+		
+		$.ajax({
+			url: "product/list.do",
+			data: {"p_name": p_name, "start": start, "display": display},
+			success: function(res_data){
+				$("#disp").html(res_data);
+			},
+			err: function(err){
+				alert(err.responseText);
+			}
+		});
+		
+	}
+
+   - select 태그에서 값이 바뀔때마다 함수 호출
+     -> <select id = "search_page" onchange = "find();">
+
+
+  - MVC
+    -> 필요할 때만 객체를 생성해서 사용 후 소멸
+  	<-> Model 2
+  		-> 한번 이상 호출되면 Container에 공간을 차지
+
+   - FrontController
+
+     1. 요청 접수
+     2. 요청 분류
+     3. 분류된 요청에 따른 처리객체 호출 (POJO: 순수 자바객체)
+        -> 리스트, 입력처리, 수정처리
+     4. 처리결과 수신
+     5. 뷰에게 출력지시
+
+     - 과정
+      - User request
+        -> Filter
+        -> FrontController
+        -> POJO
+        -> FrontController
+        -> JSP
+
+     - Servlet Container에 단 하나의 Servlet만 존재
+     - @WebServlet("*.do") -> 모든 요청을 다 받음
+
+   - filter: 요청정보가 Servlet에게 가기전 걸러주는 역할
+             new -> filter 생성 (package: filter)
+
+ 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		// place your code here
+		request.setCharacterEncoding("utf-8");
+
+		// pass the request along the filter chain
+		chain.doFilter(request, response); 
+		// -> Serlvet을 호출
+	}
+
+   - URI 추출
+     
+   * URL => http://localhost:9090/2020_1110_MVCTest/list.do
+	 URI => /2020_1110_MVCTest/list.do
+
+	 String uri = request.getRequestURI();
+
+   - index를 이용해 요청 정보 추출
+
+	//         012345678901234567890123
+	// uri = "/2020_1110_MVCTest/list.do"
+	int index = uri.lastIndexOf('/'); // 마지막 '/'의 index 
+	String cmd = uri.substring(index+1).replaceAll(".do", "");
+				 -> list, view, insert...
+
+   - 요청 분류
+
+	if(cmd.equals("list")) {
+		...
+	}else if(cmd.equals("view")) {
+		...
+	}
+
+   - 작업 수행 후 전달
+
+    // POJO(Plain Old Java Object): 순수자바객체
+    public class ListAction{
+	
+		public String execute(HttpServletRequest request, HttpServletResponse response) {
+			
+			// DB에서 목록을 가져왔다고 간주
+			List<String> list = new ArrayList<String>();
+			list.add("Java");
+			list.add("Oracle");
+			list.add("JSP");
+			list.add("Html");
+			// -> Dao 과정
+			
+			// request binding -> Controller에게 데이터 전달
+			request.setAttribute("list", list);
+			
+			return "list.jsp"; // forward or redirect할 view 정보
+		}
+	}
+
+   - 전달 받은 작업 결과를 JSP 파일로 forward
+
+   	if(cmd.equals("list")) {
+			
+		ListAction action = new ListAction();
+		String result = action.execute(request, response);
+		
+		// 수신결과 뷰를 이용해서 forward
+		// request -> FrontController, Action, JSP 모두 사용가능
+		request.getRequestDispatcher(result).forward(request, response);
+		
+	}
+
+
+  * 폴더형태로 프로젝트 추가
+    -> 오른쪽 클릭 -> import -> import.. -> General -> Existing project..
+      -> 폴더선택
+  
+  * 에러 발생(다른 프로그램, 컴퓨터, 시간에 작성한 경우)
+    -> Build path -> Configure ... -> 에러 발생 라이브러리 더블 클릭 ->
+       Workspace default.. 선택
+
+  - MVC Framework
+    - 필요한 패키지(java 파일)
+      -> annotation/RequestMapping.java     ]
+      	 annotation/ResponseBody.java     	]
+      	 controller/DispatcherServlet.java  ]
+      	 filter/EncodingFilter.java 		] => .jar 파일로 export
+      	 web.xml -> Filter, FrontController, action 정보
+
+     - JAR file 만들기
+      -> java or package 선택 -> export -> Java -> JAR file -> 위치지정 -> finish
+
+    - WEB-INF/lib -> jar 파일 붙여넣기
+    - WEB-INF -> web.xml 파일 붙여넣기
+
+    - web.xml 수정
+
+    <!-- Encoding Filter  -->
+	  <filter>
+	     <filter-name>EncodingFilter</filter-name>
+	     <filter-class>filter.EncodingFilter</filter-class>
+	  </filter>
+	  
+	  <filter-mapping>
+	     <filter-name>EncodingFilter</filter-name>
+	     <url-pattern>*.do</url-pattern>
+	  </filter-mapping>
+	  <!-- => @WebFilter(*.do) -->
+	  
+	  <servlet>
+	     <servlet-name>FrontController</servlet-name>
+	     <servlet-class>controller.DispatcherServlet</servlet-class>
+	     <!--      => 스프링 MVC에서 메인 Controller 이름         -->
+	     <init-param>
+	         <param-name>action</param-name>
+	         <param-value>action.MyTestController</param-value>
+	         <!--                메인컨트롤러.java와 일치시킴-->
+	         <!--                => 작업 컨트롤러 초기화 -->
+	     </init-param>
+	  </servlet>
+	  
+	  <servlet-mapping>
+	  	 <servlet-name>FrontController</servlet-name>
+	     <url-pattern>*.do</url-pattern>
+	  </servlet-mapping>
+
+    - 메인컨트롤러.java -> src/action에 생성
+
+      public class MyTestController {
+
+		@RequestMapping("/test/list.do")
+		public String list(HttpServletRequest request, HttpServletResponse response) {
+			
+			// WEB-INF에 views, test 폴더 생성
+			// -> jsp 파일 생성
+			return "/WEB-INF/views/test/test_list.jsp"; 
+			// forward or redirect시킬 정보
+		}
+		
+		@RequestMapping(value = "/test/test2.do", produces = "text/html; charset=utf-8;")
+		@ResponseBody
+		public String test2(HttpServletRequest request, HttpServletResponse response) {
+			
+			//항상 뷰 정보?
+			//@ResponseBody -> 응답데이터 처리
+			return "뷰를 거치지 않고 바로 응답처리"; 
+		}
+
+	  }
+
+	  * 보안상 목적으로 jsp파일은 보통 WEB-INF에 저장
+	    -> 외부에서 호출 X
+	    -> 간접적으로 호출
+
+   - 방명록 서비스 MVC화
+
+    - FrontController(MainController)
+
+    public class VisitController {
+
+		@RequestMapping("/visit/list.do")
+		public String list(HttpServletRequest request, HttpServletResponse response) {
+			
+			// parameter 수신
+			String search = request.getParameter("search");
+			String search_text = request.getParameter("search_text");
+			
+			if(search == null) search = "all";
+			Map map = new HashMap();
+			
+			// 전체검색이 아니면
+			if(!search.equals("all")) {
+				
+				if(search.equals("name")) {
+					map.put("name", search_text);
+				}else if(search.equals("content")) {
+					map.put("content", search_text);
+				}else if(search.equals("name_content")) {
+					map.put("name", search_text);
+					map.put("content", search_text);
+				}
+				
+			}
+			
+			// 목록 가져오기
+			List<VisitVo> list = VisitDao.getInstance().selectList(map);
+			// request binding
+			request.setAttribute("list", list);
+			
+			// forward할 페이지
+			return "visit_list.jsp";
+		}
+		
+		// 비밀번호 체크
+		//  -> 리턴값이 일반text가 아닌 json형식이기때문에 produces 속성을 
+		// 지정해주는 것이 좋음
+		@RequestMapping(value = "/visit/check_pwd.do", produces = "text/json; charset=utf-8")
+		@ResponseBody
+		public String check_pwd(HttpServletRequest request, HttpServletResponse response) {
+			
+			// 2. Parameter 받기
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			String c_pwd = request.getParameter("c_pwd");
+			
+			// 3. idx에 해당되는 게시물 1건을 얻어옴
+			VisitVo vo = VisitDao.getInstance().selectOne(idx);
+			
+			// 게시물 비밀번호 == 입력된 비밀번호
+			boolean bSame = vo.getPwd().equals(c_pwd);
+			
+			// {"result": bSame} = {"result": true} or {"result": false}
+			String json = String.format("{\"result\":%b}", bSame);
+			
+			// 응답처리 => DispatcherServlet(FrontController: MainController)
+			
+			return json;
+		}
+		
+		// 입력 폼 띄우기
+		@RequestMapping("/visit/insert_form.do")
+		public String insert_form(HttpServletRequest request, HttpServletResponse response){
+			// DispatcherServlet에 의해서 forward
+			return "visit_insert_form.jsp";
+		}
+		
+		// 입력하기
+		@RequestMapping("/visit/insert.do")
+		public String insert(HttpServletRequest request, HttpServletResponse response) {
+			
+			String name = request.getParameter("name");
+			String content = request.getParameter("content");
+			
+			content = content.replaceAll("\r\n", "<br>");
+			String pwd = request.getParameter("pwd");
+			String ip = request.getRemoteAddr();
+			VisitVo vo = new VisitVo(name, content, pwd, ip);
+			int res = VisitDao.getInstance().insert(vo);
+			
+			// DispatcherServlet이 아래정보를 이용해서 
+			// response.sendRedirect("list.do"); 수행
+			return "redirect:list.do";
+		}
+		
+		@RequestMapping("visit/delete.do")
+		public String delete(HttpServletRequest request, HttpServletResponse response){
+			
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			VisitDao.getInstance().delete(idx);
+			
+			return "redirect:list.do";
+		}
+		
+		@RequestMapping("visit/modify_form.do")
+		public String modify_form(HttpServletRequest request, HttpServletResponse response) {
+			
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			VisitVo vo = VisitDao.getInstance().selectOne(idx);
+			String content = vo.getContent().replaceAll("<br>", "\r\n");
+			vo.setContent(content);
+			
+			// 내용: <br> -> \r\n
+			request.setAttribute("vo", vo);
+			request.setAttribute("content", content);
+			
+			return "visit_modify_form.jsp";
+			
+		}
+		
+		@RequestMapping("visit/modify.do")
+		public String modify(HttpServletRequest request, HttpServletResponse response) {
+			
+			// textarea: \r\n -> HTML: <br>
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			String name = request.getParameter("name");
+			String content = request.getParameter("content");
+			content = content.replaceAll("\r\n", "<br>"); 
+			String pwd = request.getParameter("pwd");
+			String ip = request.getRemoteAddr();
+			VisitVo vo = new VisitVo(idx, name, content, pwd, ip);
+			int res = VisitDao.getInstance().update(vo);
+			
+			return "redirect:list.do";
+		}
+		
+	}
+
+    - 결과에 따른 메소드 객체(POJO) 수정
+
+      - forward할 경우
+        -> retrun "...jsp";
+
+      - 값을 넘겨줄 경우
+        -> return 값;
+           @Responsebody
+           @RequestMapping(value = "...do", 
+           				   produces = "text/...; charset=...;")
+           -> 메소드 위에 추가
+
+      - Redirect할 경우
+        -> return "redirect:...do";
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring(10주차/20.11.11)
+
+   - Spring Framework
+     : 자바 EE를 활용한 개발 프레임워크
+       -> 플랫폼 호환성이 좋음
+       엔터프라이즈 어플리케이션 개발의 복잡성을 줄이기 위해 개발됨
+       -> 기존에 있었던 EJB는 너무 무겁고 복잡했었음
+
+     * 참고사이트: spring.io
+
+     - 라이브러리 설치
+      Help -> Eclipse Marketplace -> spring sts 검색
+      -> spring tools 3(standalone edition) -> install
+      * spring tools 4(spring boot + legacy) -> 수업에선 사용안함
+
+     - 실행 환경 변경
+      open perspective -> Spring
+      Spring Explore -> package Explore 옆으로 드래그
+      Servers -> 하단 창으로 드래그
+      Dash board, out line 삭제
+
+     - 프로젝트 만들기
+      new -> Spring Legacy Project -> Templates: Spring MVC Project
+      -> com.mycompany.myapp: com.회사이름.주제 ex) com.ic.hello
+      * Spring Starter Project: Spring boot
+
+      * maven: Spring 관리 프로그램(처음에 라이브러리를 로드해서 시간이 걸림)
+
+     - 프로젝트 편집 구조
+      src/main/java -> Vo, Dao, Service, Controller
+      src/main/resources -> 각종 환경설정파일(mybatis, spring bean..)
+      src/main/webapp: WebContent
+		       webapp/resources -> image, css, js
+		       webapp/WEB-INF -> 외부에서는 직접 접근못함 (내부에서 조정)
+		       webapp/WEB-INF/views -> html, jsp..
+
+     - 페이지 인코딩 (jsp)
+       <%@ page session="false">
+       -> <%@ page session="false" pageEncoding="utf-8"%>
+
+     - pom.xml: Maven 설정 파일
+     			1. 프로젝트에 사용될 lib 설정
+     			2. 배치처리
+     			(현재 작업 환경의 소스를 컴파일해서 웹 실행 환경으로 구축)
+     			-> 전체 프로젝트를 관리
+
+     - 프로젝트 실행 파일화(WAR file)
+       -> 프로젝트 오른쪽 클릭 -> Run as -> Maven install..
+       -> target에 생성 -> 복사
+
+     - 프로젝트 업데이트
+      Project -> Maven -> Update Project
+
+     * Maven 프로젝트는 url에 프로젝트 경로가 나오지 않음
+       -> http://localhost:9090/hello/
+
+     - Spring 초기화
+       Web Application 시작 -> web.xml(webapp/WEB-INF) 읽어와서 초기화
+       -> ContextLoaderListener: 정보를 읽어옴
+       -> root-context.xml(webapp/WEB-INF/spring) 
+          -> <Setter Injection: setter를 이용해서 값을 주입>
+          	 <bean id = "p1" class = "vo.PersonVo">
+          		<property name = "name" value = "일길동"></property>
+  				<property name = "age" value = "33"></property>
+				<property name = "tel" value = "010-111-1234"></property>
+          	 </bean>
+          	  => 기본 생성자
+
+          	  <Constructor Injection: 생성자를 이용해서 값을 주입>
+          	  PersonVo p2 = new PersonVo("이길동", 30, "010-222-1234")
+          	 <bean id = "p2" class = "vo.PersonVo">
+				<constructor-arg value = "이길동" index = "0"/>
+				<constructor-arg value = "30" index = "1"/>
+				<constructor-arg value = "010-222-1234" index = "2"/>
+			 </bean>
+			  => 기본 생성자(Overload), index 생략가능 -> 순서맞춰야함
+          	 * bean: 객체에 대한 상징적 명칭(클래스)
+          	 -> 프로그램 시작할때 객체를 미리 생성, 개발자가 설계
+
+          	 	<!-- String nameBean = new String("홍길동"); -->
+				<bean id = "nameBean" class = "java.lang.String">
+					<constructor-arg value = "홍길동"/>
+				</bean>
+				
+				<!-- Integer ageBean = new Integer(30); -->
+				<bean id = "ageBean" class = "java.lang.Integer">
+					<constructor-arg value = "30"/>
+				</bean>
+				
+				<!-- String telBean = new String("010-333-1234); -->
+				<bean id = "telBean" class = "java.lang.String">
+					<constructor-arg value = "010-333-1234"/>
+				</bean>
+				
+				<!-- Setter Injection -->
+				<bean id = "p3" class = "vo.PersonVo">
+					<property name = "name" ref = "nameBean"/>
+					<property name = "age" ref = "ageBean"/>
+					<property name = "tel" ref = "telBean"/>
+				</bean>
+
+				<!-- Constructor Injection -->
+				<bean id = "p4" class = "vo.PersonVo">
+					<constructor-arg ref = "nameBean"/>
+					<constructor-arg ref = "ageBean"/>
+					<constructor-arg ref = "telsBean"/>
+				</bean>
+	
+			  * 자료형에 관련된 자바 객체들 -> java.lang.***
+
+	 - IoC
+
+	(JSP)
+	// JSP 내장객체: pageContext, request, session, application,
+	//                   out, page, ...
+	//ServletContext app = getServletContext();
+
+	// spring bean이 생성된 위치를 관리하는 객체정보 구한다
+	// spring container(application 영역의 일부를 임대)
+	WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(application);
+	
+	// 저장객체(bean) 정보를 가져온다
+	// 4개 scope에 저장되는 값은 Object형으로 저장 
+	//                          -> Java의 모든 객체 저장가능
+	
+	// 방법 1
+	PersonVo p1 = (PersonVo)wc.getBean("p1");
+	=> down casting
+
+	// 방법 2
+	PersonVo p2 = wc.getBean("p2", PersonVo.class);
+	=> 객체의 클래스로 저장
+
+	=> IoC -> single-ton
+	   <-> non-IoC -> 페이지를 새로고침하면 객체를 계속 생성
+
+	(root-context.xml)
+   	<!-- scope="singleton" 생략하면 기본옵션 
+		 scope="prototype" : 모형만 만듦 -> 요청시마다 생성 -->
+	<bean id = "p4" class = "vo.PersonVo" scope="prototype">
+		<constructor-arg ref = "nameBean"/>
+		<constructor-arg ref = "ageBean"/>
+		<constructor-arg ref = "telBean"/>
+	</bean>
+
+	 - ArrayList 설계
+
+	 (myutil/MyList.java)
+
+	 public class MyList {
+
+		List<String> fruit_list;
+
+		public List<String> getFruit_list() {
+			return fruit_list;
+		}
+
+		public void setFruit_list(List<String> fruit_list) {
+			this.fruit_list = fruit_list;
+		}
+	
+	}
+
+	(root-context.xml)
+	<!-- MyList 객체 설계 -->
+	<!-- MyList myListBean = new MyList(); -->
+	<bean id = "myListBean" class = "myutil.MyList">
+		<property name = "fruit_list" >
+			<!-- new ArrayList() -->
+			<list>
+				<!-- add("사과") -->
+				<value>사과</value>
+				<value>참외</value>
+				<value>수박</value>
+				<value>포도</value>
+			</list>
+		</property>
+	</bean>
+
+	(JSP)
+	WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(application);
+	// ArrayList
+	MyList myList = wc.getBean("myListBean", MyList.class);
+	// MyList 내의 List정보 얻어오기
+	List fruit_list = myList.getFruit_list();
+	pageContext.setAttribute("fruit_list", fruit_list);
+
+	 - Set 설계
+
+	(myutil/MySet.java)
+	public class MySet {
+
+		Set<String> set;
+
+		public Set<String> getSet() {
+			return set;
+		}
+
+		public void setSet(Set<String> set) {
+			this.set = set;
+		}
+	
+	}
+
+	(root-context.xml)
+	<!-- Set 객체 설계 -->
+	<bean id = "mySetBean" class = "myutil.MySet">
+		<property name = "set">
+			<!-- new HashSet() -->
+			<set>
+				<value>서울</value>
+				<value>경기</value>
+				<value>인천</value>
+				<value>대전</value>
+			</set>
+		</property>
+	</bean>
+
+	- Map 설계
+
+	(myutil.MyMap)
+	public class MyMap {
+
+		Map map;
+		
+		public MyMap() {
+			// TODO Auto-generated constructor stub
+		}
+		
+		public MyMap(Map map) {
+			super();
+			this.map = map;
+		}
+
+
+		public Map getMap() {
+			return map;
+		}
+
+		public void setMap(Map map) {
+			this.map = map;
+		}
+		
+		
+	}
+
+	(root-context.xml)
+	<!-- Map 객체 설계 -->
+	<!-- Constructor Injection 
+		  MyMap myMapBean = new MyMap(map);
+	-->
+	<bean id = "myMapBean" class = "myutil.MyMap">
+		<constructor-arg >
+			<!-- new HashMap() -->
+			<map>
+				<entry key="A" value="America"/>
+				<entry key="B" value="Brazil"/>
+				<entry key="C" value="Canada"/>
+				<entry key="D" value="Denmark"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	- Propertise 설계
+	(myutil.MyProp)
+	public class MyProp {
+
+		Properties prop;
+
+		public Properties getProp() {
+			return prop;
+		}
+
+		public void setProp(Properties prop) {
+			this.prop = prop;
+		}
+		
+	}
+
+	(root-context.xml)
+	<!-- Propertise 객체 설계 -->
+	<bean id = "myPropBean" class = "myutil.MyProp">
+		<property name = "prop">
+			<!-- new Propertise() -->
+			<props>
+				<prop key="driver" >oracle.jdbc.driver.OracleDriver</prop>
+				<prop key="url">jdbc:oracle:thin:@localhost:1521:xe</prop>
+				<prop key="user">scott</prop>
+				<prop key="pwd">tiger</prop>
+			</props>
+		</property>
+	</bean>
+
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring (10주차/20.11.12)
+
+   - MVC 동작구조
+
+     - web.xml 구동
+     	- ContextLoaderListener
+     	  : Spring 공유자원 bean 등록(-> root-context.xml)
+
+     	- DispatcherServlet
+     	  : Spring MVC에서 FrontController 역할
+     	    수행 Controller 지정 -> servlet-context.xml
+     	    HomeController -> SampleController
+     	    (POJO기반 FrontController)
+
+     - servlet-context.xml 초기화 종류
+
+    1. resource 초기화
+  	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+  	=> image, css, javascript(js) ...
+
+	<resources mapping="/resources/**" location="/resources/" />
+	=> resources 폴더에 있는 모든 하위 자원을 허용
+
+	<!-- <resources mapping="/**" location="/" /> -->
+	=> 모든 경로의 폴더 자원 허용
+
+	<resources mapping="/myres/**" location="/myres/" />
+	=> 내가 생성한 폴더의 모든 하위 폴더의 자원 허용
+
+	2. Controller return 경로 접미,접두어 초기화
+	<!-- view name: home
+				    ->    (prefix)   +    view name  + (suffix)
+				      /WEB-INF/views/       home         .jsp      -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<!--                  => 접두어 설정 -->
+		<beans:property name="suffix" value=".jsp" />
+		<!--                  => 접미어 설정 -->
+	</beans:bean>
+
+	3. Controller 초기화
+	<!-- HomeController 생성 -->
+	<!-- Auto Detect: 자동 생성 
+		 component-scan: Component가 발견되면 자동 생성
+		  
+		 @Component
+		  ㄴ @Controller: front   
+		  ㄴ @Service: 통합작업  
+		  ㄴ @Repository: Dao   
+		   => 개발 프레임워크 3가지 영역                 -->
+	<context:component-scan base-package="com.ic.param" />
+	         -> component 인것만 자동으로 생성  위치 
+	         -> Class위에 @Component 라고 선언 
+
+	<!-- 수동 생성 -->
+	<beans:bean class = "com.ic.param.HomeController"></beans:bean>
+	-> HomeController가 두번 생성했기 때문에 에러발생
+	-> 자동 생성 코드 or 수동 생성 코드 제거
+
+
+   - 요청 처리 과정
+     User -> /...do
+     -> DispatcherServlet (코드상에 존재X, Spring에서 미리 만들어놈)
+     -> Controller
+     -> DispatcherServlet
+     -> JSP
+
+    (Controller)
+
+    // 해당 메소드의 호출 주체 -> DispatcherServlet
+	// 요청 처리 방식 1
+	@RequestMapping("/test.do")
+	public String test(Model model) {
+		//  Model: interface(객체의 사용 매뉴얼 -> 설명서)
+		//  -> Dispatcher가 Controller가 사용할 수 있는 저장소를 생성
+		//   -> Controller에게 Model을 전달, 결과값을 저장(Map형식)
+		//    -> 값을 전달받은 Dispatcher가 request에 binding
+
+		// Data 생산
+		String msg = "안녕";
+		
+		// DispatcherServlet이 만들어놓은 저장소에 값을 저장
+		// DS가 request binding 
+		model.addAttribute("msg", msg); 
+		// -> request
+		// -> test.jsp 에서 msg 사용 가능
+		
+		return "test"; // => view name
+		//          ->  /WEB-INF/views/test.jsp <= View Resolver
+	}
+
+	// 요청 처리 방식 2
+	@RequestMapping("/test2.do")
+	public ModelAndView test2() {
+		
+		String msg = "Hi~ Everyone";
+		
+		ModelAndView mv = new ModelAndView();
+		// Data set
+		mv.addObject("msg", msg);
+		// View set
+		mv.setViewName("test2"); 
+		// WEB-INF/views/test2.jsp <= View Resolver
+		
+		return mv;
+	}
+	
+	- Spring 인코딩 설정
+	(web.xml)
+	<filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    - 입력값 받기
+
+    (Controller)
+    // 입력폼 띄우기
+	@RequestMapping("/insert_form.do")
+	public String insert_form() {
+		return "insert_form"; // forward page
+	}
+	
+	// 낱개로 받기
+	@RequestMapping("insert1.do")
+	public String insert1(String name, int age, String tel, Model model, HttpServletRequest request) {
+	//  변수명과 파라미터명 다르면 못 받음
+	//  String name => @RequestParam("name") String irum
+	//  Handle intercepter
+	//  : request.getParameter, String -> int 변환 Spring이 다 해줌
+		
+		// 포장
+		PersonVo vo = new PersonVo(name, age, tel);
+		// request binding
+		model.addAttribute("vo", vo);
+		
+		return "result_insert";
+	}
+
+	// 객체로 받기
+	@RequestMapping("insert2.do")
+	public String insert2(HttpServletRequest request, PersonVo vo, Model model) {
+		
+		// 조건: Vo 속성명 == Parameter명
+		//        PersonVo 생성해서 넘겨준다
+		// 결과적으로 request binding
+		
+		String ip = request.getRemoteAddr();
+		System.out.println("요청자 IP = " + ip);
+		
+		model.addAttribute("vo", vo);
+		
+		return "result_insert";
+	}
+
+	=> 자동으로 Vo 생성해서 setter로 값 입력
+
+	- Servlet 객체변수 자동 생성
+
+	(Controller)
+	// 자동 엮기(자동 Injection) -> 메소드 영역 어디서나 사용가능
+	//                          -> 수동으로 Controller 생성시 사용 불가능
+	//  <beans:bean class = "com.ic.param.TestController"></beans:bean>
+	@Autowired
+	HttpServletRequest request;
+	
+	@Autowired
+	HttpSession session;
+	
+	@Autowired
+	ServletContext application;
+
+	(web.xml)
+	<!-- 수동 생성시 @Autowired 지원 속성 -->
+	<context:annotation-config />
+	<!-- 수동 생성 -->
+	<beans:bean class = "com.ic.param.HomeController"></beans:bean>
+
+	- 입력 변수를 받을 때 변수이름을 바꿀 경우
+		public String insert3(
+			       String name,
+			       String id,
+			       String pwd,
+			       String gender,
+			       String blood,
+			       String profile,
+			       @RequestParam(value = "hobby", required = false)  String [] hobby_array,
+			       -> @RequestParam을 사용해서 변수 이름을 바꿈
+			       	-> 값이 안들어올수도 있기때문에 required = false 추가
+			       @RequestParam("friend") String [] friend_array, 
+			       Model model)
+			  
+------------------------------------------------------------------------
+
+ - Tomcat Spring (10주차/20.11.13)
+
+  - Spring STS(Spring Tool Suit)
+    - Maven Project
+      : 프로젝트 관리하는 프로그램
+        1. 실행파일
+        2. 라이브러리 관리
+        => pom.xml에 저장
+
+        Maven -> Local Repository(지정 저장소)
+        		 -> user/.m2/repository에 라이브러리 저장(pom.xml)
+        	  -> mvnrepository.com(중앙 저장소)
+                 -> user/.m2/repository에 라이브러리 저장(다운로드)
+
+        * 다른 컴퓨터에 프로젝트를 옮겨서 실행할 때
+          -> 서로 환경이 달라 실행이 안될수도 있음
+             -> user/.m2 폴더를 지우고 프로젝트를 로딩하면 라이브러리가 자동으로 다운로드 됌
+             or
+             -> 프로젝트 - Maven - Update Project
+
+  - Spring DB 환경설정
+  	- 생성순서
+  	  : BasicDataSource(ds)
+  	    -> SqlSessionFactoryBean(factoryBean)
+  	    -> SqlSessionTemplate(sqlSession)
+  	    -> ...Dao(..._dao)
+  	    -> ...Controller
+
+  	1. 인코딩 설정(web.xml)
+
+  	<!-- 스프링에서 인코딩 설정  -->
+	<filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    2. 환경설정 xml 파일 생성
+      
+       src/main/resouces
+       -> config.spring.context 패키지 생성
+          -> context-1-datasource.xml
+          -> context-2-mybatis.xml
+          -> context-3-dao.xml
+          -> context-4-service.xml
+       -> config.spring.serlvet 패키지 생성
+       	  -> servlet-context.xml 이동
+
+       (web.xml)
+       	<context-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:config/spring/context/context-*.xml</param-value>
+		</context-param>
+
+		-> classpath*: 복수 classpath를 초기화할때 *를 붙임
+		-> context-*.xml: context-로 시작하는 xml 파일 전부
+
+		<servlet>
+			<servlet-name>appServlet</servlet-name>
+			<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+			<init-param>
+				<param-name>contextConfigLocation</param-name>
+				<param-value>classpath:config/spring/servlet/servlet-context.xml</param-value>
+				<!-- => 이 부분을 수정 (경로) -->
+			</init-param>
+			<load-on-startup>1</load-on-startup>
+		</servlet>
+
+		-> webapp/WEB-INF/sping 폴더 삭제
+
+    * 프로젝트 -> Run as -> Maven install: 실행파일 생성(WAR) - target
+    * src/main/java    ]
+      src/main/resouce ] => 실행파일을 만들때 WEB-INF/classes에 생성
+      					 => "classpath"
+      ex)
+      src/main/java/com.ic.db/HomeController.java
+      -> .WAR/WEB-INF/classes/com/ic/db/HomeController.java
+
+      src/main/resouce/config.spring.context/...
+      -> .WAR/WEB-INF/classes/config/spring/context/...
+
+	3. mybatis 설정 파일
+
+	   스프링Tip\spring_Mybatis_설정\src\config 복사
+	   -> src/main/resources 에 붙여넣기 - Overwrite
+	      -> config.mybatis/db.propertise 
+	         jdbc.driver=oracle.jdbc.driver.OracleDriver
+			 jdbc.url=jdbc:oracle:thin:@localhost:1521:xe
+			 jdbc.username=test
+			 jdbc.password=test
+
+			 앞에 'jdbc.' 로 이름 수정 (spring 예약어 충돌때문)
+
+		스프링Tip\spring_Mybatis_설정\WEB-INF\mybatis-config 복사
+		-> 	src/main/resources/config/mybatis에 붙여넣기	
+
+	4. datasource.xml
+
+		- 스프링Tip\spring_Mybatis_설정\WEB-INF\applicationContext 열기
+		-> 	
+		<context:property-placeholder 
+			location="classpath:config/mybatis/db.properties"/>
+
+		<!-- new BasicDataSource() -->
+		<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName" value="${driver}"/>
+			<property name="url" value="${url}"/>
+			<property name="username" value="${username}"/>
+			<property name="password" value="${password}"/>
+			<property name="defaultAutoCommit" value="false"/>
+		</bean>
+
+		-> 복사
+		-> context-1-datasource.xml에 붙여넣기
+		-> 
+		<!-- new BasicDataSource() -->
+		<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName" value="${jdbc.driver}"/>
+			<property name="url" value="${jdbc.url}"/>
+			<property name="username" value="${jdbc.username}"/>
+			<property name="password" value="${jdbc.password}"/>
+			<property name="defaultAutoCommit" value="false"/>
+		</bean>
+		-> value="${jdbc.}" 로 수정(config/mybatis/db.properties)
+		-> 하단 Namespaces 클릭
+		-> context - ... 체크(prefix 설정)
+		   - <context:...> 에러 해결
+
+		- 다른 프로젝트의 ojdbc14.jar 복사 
+		-> 톰캣설치폴더(C:\apache-tomcat-8.5.59\lib)에 붙여넣기
+
+		- 스프링Tip\maven에서 lib등록\maven에서 dbcp등록(sts)
+		->  commons-dbcp
+			commons-dbcp
+			1.3
+
+			commons-collections
+			commons-collections
+			3.2.1
+
+			commons-logging
+			commons-logging
+			1.1.1
+	    -> pom.xml 의 하단 Dependencies
+	    -> Dependencies - Add..
+	       -> Group-id: commons-dbcp
+	       	  Artifact id: commons-dbcp
+	       	  Version: 1.3 (mvnrepository.com에 있는 버젼이어야 함)
+	       -> OK
+	    - <bean ...> 에러 해결 (dbcp 라이브러리)
+
+
+	5. mybatis.xml
+
+		- 스프링Tip\spring_Mybatis_설정\WEB-INF\applicationContext 열기
+		-> 
+		
+		<bean id="factoryBean" 
+		        class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="ds" />
+			<property name="configLocation" 
+			          value="/WEB-INF/mybatis-config.xml"/>
+		</bean>
+		
+		<!--  SqlSession sqlSession 생성 
+		      SqlSessionTemplate  template;
+		 -->	
+		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+			<constructor-arg ref="factoryBean" />
+		</bean>
+
+	    -> 복사
+		-> context-2-mybatis.xml에 붙여넣기
+		-> 
+
+		<bean id="factoryBean" 
+	        class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+		<property name="configLocation" 
+		          value="classpath:config/mybatis/mybatis-config.xml"/>
+		</bean>
+
+		-> classpath:config/mybatis/mybatis-config.xml로 수정
+
+		- 스프링Tip\maven에서 lib등록\maven에서 오라클 및 mybatis 등록하기(sts)
+
+		-> 
+
+		########## mybatis등록 ########################
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+		<!-- mybatis 고유 라이브러리 -->
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<!-- spring 환경의 mybatis 라이브러리 -->
+
+		##### transaction처리 ###################
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.2.3.RELEASE</version>
+		</dependency>
+
+		-> pom.xml의 Dependencies
+		-> Add..
+		-> 위의 3개 라이브러리 등록 후 Save
+		   - mybatis.xml 에러 해결 (라이브러리)
+
+	* Bean-graph 확인 (프로젝트를 실행시켜야 보임)
+	  - Spring Explore (왼쪽 Tab)
+	    -> 프로젝트 
+	    -> Beans 
+	    -> web-context 오른쪽 클릭 
+	    -> Open Beans Graph
+	    -> 연결 상태 확인 ( A -> B: A가 B를 사용할 수 있음)
+
+	  - bean 그래프가 안나올 경우 (context 자동 생성시 안보일수도 있음)
+	    -> 프로젝트 오른쪽 클릭
+	    -> Properties
+	    -> Beans 검색
+	    -> Beans Support
+	    -> Config Files
+	      -> Add XML Config..
+	      -> src/main/resources의 context, servlet
+	      -> context 모두 클릭 후 OK
+	    -> Config Sets
+	      -> New
+	      -> Name: web-context
+	      -> 하단에 모든 context 체크
+	      -> oK
+	    -> Apply
+
+	6. Vo 생성, mybatis 설정
+
+	   confi.mybatis.mapper -> dept.xml 파일 붙여넣기
+	   src/main/java -> vo 객체 생성 (DeptVo)
+	   mybatis-config.xml 수정
+	   -> 
+
+	   	<settings>
+			<setting name="cacheEnabled" value="false" />
+			<setting name="useGeneratedKeys" value="true" />
+			<setting name="defaultExecutorType" value="REUSE" />
+		</settings>
+		
+		<typeAliases>
+			<typeAlias type="vo.DeptVo" alias="dept"/>
+		</typeAliases>
+		
+		<mappers>
+			<mapper resource="config/mybatis/mapper/dept.xml" />
+		</mappers>
+
+	7. Dao 생성
+
+	   - src/main/java -> dao 패키지 생성 후 DeptDao.java 생성
+
+	   public class DeptDao {
+
+			// class: 제조방법 + 사용방법
+			// SqlSessionTemplate sqlSessionTemplate;
+			// -> SqlSession를 구현한 객체(스프링 방식)
+			
+			// interface: 사용방법 -> 사용자
+			SqlSession sqlSession;
+
+			public SqlSession getSqlSession() {
+				return sqlSession;
+			}
+
+			public void setSqlSession(SqlSession sqlSession) {
+				this.sqlSession = sqlSession;
+			}
+			
+		}
+
+	   - context-3-dao.xml 수정 ->
+	   	<bean id = "dept_dao" class = "dao.DeptDao">
+		<!--                      context-2-mybatis의 sqlSessionBean -->
+		<property name = "sqlSession" ref = "sqlSessionBean"></property>
+		<!--              => DeptDao에 있는 sqlSession 속성 
+						     DeptDao.setSqlSession() 호출   -->
+		</bean>
+
+		* context-2-mybatis.xml
+
+		<!--  SqlSession sqlSession 생성      -> 인터페이스
+	      	  SqlSessionTemplate  template; -> 클래스
+	      	  => OpenSession 역할-->	
+		
+		<bean id="sqlSessionBean"
+		class="org.mybatis.spring.SqlSessionTemplate">
+			<constructor-arg ref="factoryBean" />
+		</bean>
+
+		=> id가 context-3-dao.xml에 있는 ref와 일치해야함
+
+	8. Controller 생성
+
+	* config.spring.context/.. -> ContextLoaderListener가 생성
+	  config.spring.servlet/.. -> DispatcherServlet이 생성
+
+	  - src/main/java/com.ic.db -> DeptController.java 생성
+	  ->
+
+	  @Controller
+		public class DeptController {
+
+			DeptDao dept_dao;
+
+			// Constructor Injection
+			public DeptController(DeptDao dept_dao) {
+				super();
+				this.dept_dao = dept_dao;
+			}
+			
+			// 부서목록조회
+			@RequestMapping("/dept/list.do")
+			public String list(Model model) {
+				
+				List<DeptVo> list =dept_dao.selectList();
+						
+				// Model을 통해서 DispatcherServlet에게 Data전달
+				model.addAttribute("list", list);
+				
+				return "dept/dept_list";
+				//       = WEB-INF/views/dept/dept_list.jsp
+			}	
+		}
+
+	  - Dao에서 작업 수행
+	  	public List<DeptVo> selectList() {
+			// TODO Auto-generated method stub
+			return sqlSession.selectList("dept.dept_list");
+		}
+
+	9. 출력할 JSP 파일 생성
+
+	  - WEB-INF/views/dept/dept_list.jsp 생성
+
+	- 다른 프로젝트에서 Spring 기반 MyBatis 환경설정
+	  - config 폴더 복사 -> src/main/resources에 붙여넣기
+	  - web.xml 복사 -> WEB-INF에 붙여넣기
+	  - pom.xml 복사 -> 프로젝트에 붙여넣기
+	  - pom.xml -> Overview -> Artifact Id: ... , Project Name: ... 수정 
+	  - 주로 확인해볼 사항
+	    - mybatis-config.xml
+	      -> typeAliases 확인
+	      -> mappers 확인
+
+	    - context-3-dao.xml
+	      -> id, class가 이름이 제대로 되어있는지 확인
+	         ex)  id = "sawon_dao" class = "dao.SawonDao"
+	    
+	    - servlet-context.xml
+	      -> context 생성 확인 (Controller)
+	         - 자동 or 수동
+	         - 수동일시 Controller 경로와 이름, 속성 확인
+	           ex) 
+	           	<beans:bean class = "com.ic.db2.SawonController">
+					<beans:constructor-arg ref = "sawon_dao"/>	
+				</beans:bean>
+
+	    - sample.xml (mapper)
+	      -> namespace, id, resultType, parameterType, SQL문 확인
+	         ex) 
+
+	         <mapper namespace="sawon">
+				<select id = "sawon_list" resultType = "vo.SawonVo">
+					<!-- SQL문 작성 -->
+					select * from sawon
+				</select>
+			</mapper>
+
+		- Controller.java
+		  -> 클래스 앞 @Controller 생성 확인
+		  -> 변수 이름, 경로 확인
+		  -> @RequestMapping 경로 확인
+		  ex)
+
+		  @Controller
+			public class SawonController {
+
+				SawonDao sawon_dao;
+
+				// Constructor Injection
+				public SawonController(SawonDao sawon_dao) {
+					super();
+					this.sawon_dao = sawon_dao;
+				}
+				
+				// 부서목록조회
+				@RequestMapping("/sawon/list.do")
+				public String list(Model model) {
+					
+					List<SawonVo> list = sawon_dao.selectList();
+							
+					// Model을 통해서 DispatcherServlet에게 Data전달
+					model.addAttribute("list", list);
+					
+					return "sawon/sawon_list";
+					
+				}
+				
+			}
+
+		- Dao.java
+		  -> 변수 이름과 절차 확인
+		  	public class SawonDao {
+
+				SqlSession sqlSession;
+
+				public SqlSession getSqlSession() {
+					return sqlSession;
+				}
+
+				public void setSqlSession(SqlSession sqlSession) {
+					this.sqlSession = sqlSession;
+				}
+
+				public List<SawonVo> selectList() {
+					// TODO Auto-generated method stub
+					return sqlSession.selectList("sawon.sawon_list");
+				}
+				
+			}
+
+		- Vo
+		  -> 변수 이름, 생성자, getter/setter 확인
+
+		- JSP
+		  -> 경로 확인
+		     ex) WEB-INF/views/sawon/sawon_list.jsp
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring 파일업로드(11주차/20.11.16)
+
+  - 파일 업로드 환경설정
+
+    - 스프링Tip\Spring자료\spring_fileupload.xml 에서 아래 내용 복사
+  	<!-- multipartResolver -->
+	<bean name="multipartResolver"
+	      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="defaultEncoding" value="utf-8"/>
+	    <property name="maxUploadSize" value="1048576"></property>
+	</bean>
+
+	-> config.spring.context에 context-5-fileupload.xml 생성 후 붙여넣기
+
+	- 스프링Tip\maven에서 lib등록.txt
+
+	commons-fileupload
+	commons-fileupload
+	1.2.1
+
+	commons-io
+	commons-io
+	1.3.1
+
+	-> pom.xml 의 Dependencies에서 라이브러리 추가
+
+  - file 파라미터 받기(Controller)
+
+  	@Autowired
+	ServletContext application;
+
+  	@RequestMapping("/insert1.do")
+	public String insert1(String title, 
+	@RequestParam MultipartFile photo, Model model) throws Exception{
+		String filename = "no_file";
+		
+		if(!photo.isEmpty()) {
+			String web_path = "/resources/upload/";
+			String abs_path = application.getRealPath(web_path);
+			System.out.println(abs_path);
+			
+			// 업로드된 파일 이름
+			filename = photo.getOriginalFilename();
+			//           MulitpartFile
+			File f = new File(abs_path, filename);
+			// 내가 저장할 파일 정보
+			
+			// Spring 에서는 파일명이 중복되면 그냥 덮어쓰기함
+			// 저장할 파일명이 존재하는지 체크
+			if(f.exists()) {
+				// 1/1000 단위 시간
+				long tm = System.currentTimeMillis();
+				filename = String.format("%d_%s", tm, filename);
+				f = new File(abs_path, filename);
+			}	
+			
+			// photo를 지정한 위치와 파일명으로 보냄
+			// Spring에 저장해놓은 임시파일 => 내 영역으로 복사
+			photo.transferTo(f);
+			
+		}
+		
+		// Model을 통해서 2가지 정보 binding
+		model.addAttribute("title", title);
+		model.addAttribute("filename", filename);
+		
+		return "result1";
+	}
+
+	* 객체로 처리할때는 PhotoVo vo로 받고 photo -> vo.getPhoto()로 변경
+
+  - file을 여러개 업로드할 경우(순서 있음)
+
+   - 같은 타입이여도 name을 다르게 하면 안됌
+       사진1(큰사진):<input type = "file" name = "photo"><br>
+	   사진2(작은사진):<input type = "file" name = "photo"><br>
+
+	   	@RequestMapping("/insert3.do")
+		public String insert3(String title, 
+		@RequestParam MultipartFile [] photo, Model model) throws Exception{
+			
+			String filename1 = "no_file";
+			String filename2 = "no_file";
+			
+			for(int i = 0; i < photo.length; i++) {
+				if(!photo[i].isEmpty()) {
+					String web_path = "/resources/upload/";
+					String abs_path = application.getRealPath(web_path);
+					System.out.println(abs_path);
+					
+					String filename = photo[i].getOriginalFilename();
+					//                        MulitpartFile
+					File f = new File(abs_path, filename);
+					if(f.exists()) {
+						long tm = System.currentTimeMillis();
+						filename = String.format("%d_%s", tm, filename);
+						f = new File(abs_path, filename);
+					}	
+					
+					// photo를 지정한 위치와 파일명으로 보냄
+					// Spring에 저장해놓은 임시파일 => 내 영역으로 복사
+					photo[i].transferTo(f);
+					
+					if(i == 0)
+						filename1 = filename;
+					else
+						filename2 = filename;
+				}		
+			}
+			
+			// Model을 통해서 2가지 정보 binding
+			model.addAttribute("title", title);
+			model.addAttribute("filename1", filename1);
+			model.addAttribute("filename2", filename2);
+			
+			return "result3";
+		}
+
+  - file을 여러개 업로드할 경우(순서 없음, 무작위)
+
+    - input 태그에 multiple 속성 지정
+    사진:<input type = "file" name = "photo" multiple="multiple"><br>
+
+	  (Controller)
+	  @RequestMapping("/insert4.do")
+		public String insert4(String title, 
+		@RequestParam List<MultipartFile> photo, Model model) throws Exception{
+			
+			// 업로드된 파일 목록 추가
+			List<String> filename_list = new ArrayList<String>();
+			
+			for(MultipartFile mf : photo) {
+				if(!mf.isEmpty()) {
+					String web_path = "/resources/upload/";
+					String abs_path = application.getRealPath(web_path);
+					System.out.println(abs_path);
+					
+					String filename = mf.getOriginalFilename();
+					File f = new File(abs_path, filename);
+
+					if(f.exists()) {
+						// 1/1000 단위 시간
+						long tm = System.currentTimeMillis();
+						filename = String.format("%d_%s", tm, filename);
+						f = new File(abs_path, filename);
+					}	
+					
+					// photo를 지정한 위치와 파일명으로 보냄
+					// Spring에 저장해놓은 임시파일 => 내 영역으로 복사
+					mf.transferTo(f);
+					
+					// 각각의 업로드된 파일명을 리스트에 추가
+					filename_list.add(filename);
+					
+				}		
+			}
+			
+			model.addAttribute("title", title);
+			model.addAttribute("filename_list", filename_list);
+			
+			return "result4";
+		}
+
+		(JSP)
+		<c:forEach var="filename" items="${ filename_list }">
+			<img src = "resources/upload/${ filename }" width = 200 style = "margin: 10px;">
+		</c:forEach>
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring 포토갤러리(11주차/20.11.17)
+
+  - FileDownload 에러
+    : Spring에서 Tomcat 라이브러리를 전부 안 넣어서 생기는 현상
+    -> 프로젝트 -> Build Path -> Config Build ... -> Add Library -> Tomcat ... 선택 -> Finish
+
+  - JSP 외부 파일경로
+    - ${ pageContext.request.contextPath }: webapp
+    - 현재 경로: WEB-INF
+
+  - Controller가 많을 경우
+
+	@Controller
+	@RequestMapping("/photo/*")
+	public class PhotoController {
+		...		
+		@RequestMapping("list.do")
+		public String list(Model model){
+		...
+		}
+	}
+
+  - Spring 정보 전달
+	: Model을 통한 데이터는 DispatcherServlet에게 전달
+
+	  - 용도1: forward로 반환하면 request binding
+	  	-> model.addAttribute("list", list);
+		   return "member/member_list";
+
+	  - 용도2: redirect로 반환하면 query로 사용됨
+	    -> model.addAttribute("reason", "fail_id");
+		   return "redirect:login_form.do";
+
+      - 용도3: 객체 or 변수를 전달
+        -> 	@RequestMapping(value = "/member/check_id.do", 
+        					produces = "text/json; charset=utf-8")
+			@ResponseBody 
+			public String check_id(String m_id, Model model) {
+				...
+				return json;
+			}
+
+  - 파일 등록
+  	// 사진등록
+	@RequestMapping("/photo/insert.do")
+	public String insert(String p_title, String p_content, @RequestParam MultipartFile p_photo) throws Exception{
+		
+		String webpath = "/resources/upload/";
+		String abs_path = application.getRealPath(webpath);
+		
+		String p_filename = "no_file";
+		
+		if(!p_photo.isEmpty()) {
+			p_filename = p_photo.getOriginalFilename();
+			File f = new File(abs_path, p_filename);
+			
+			if(f.exists()) {
+				// 1/1000 단위 시간
+				long tm = System.currentTimeMillis();
+				p_filename = String.format("%d_%s", tm, p_filename);
+				f = new File(abs_path, p_filename);
+			}	
+			
+			// Spring에 저장해놓은 임시파일 => 내 영역으로 복사
+			p_photo.transferTo(f);
+		}
+		
+		String p_ip = request.getRemoteAddr();
+		
+		MemberVo user = (MemberVo) session.getAttribute("user");
+		int m_idx = user.getM_idx();
+		
+		PhotoVo vo = new PhotoVo(p_title, p_content, p_filename, p_ip, m_idx);
+		
+		photo_dao.insert(vo);
+		
+		return "redirect:list.do";
+	}
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring 답변형 게시판(11주차/20.11.18)
+
+  - Sequence 현재 idx 불러오기 (SQL)
+    -> seq_board_idx.currVal
+
+  - HTML(EL) 에서는 기호문자 잘 사용하지 않음
+    ex) <, <=, >, >=, ==, ...
+    -> ge, gt, le, lt ...
+     * &nbsp; -> 공백 문자
+       &lt -> "<"
+       &gt -> ">"
+
+  - 제목에 들여쓰기 & 답글쓰기 (JSP)
+
+	<!-- 들여쓰기 -->	
+	<c:forEach begin = "1" end = "${ vo.depth }">
+		&nbsp;  &nbsp;
+	</c:forEach>
+
+	<!-- 답글쓰기 -->
+	<c:if test = "${ vo.depth gt 0 }">
+	ㄴ
+	</c:if>
+
+  - 내용칸 최소크기 정하기(JSP)
+
+	<th>내용</th>
+	<td>
+		<div style = "min-height: 80px;">
+			${ vo.b_content }
+		</div>	
+	</td>
+
+  - textarea 사이즈 고정
+
+    textarea{
+		resize: none;
+	}
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring 답변형 게시판(11주차/20.11.19)
+
+  - 조회수 증가
+
+  	// -> 새로고침하면 계속 조회수가 증가
+	// 해당 게시물을 봤는지 (세션에 show라는 변수 체크)
+	Object bShow = session.getAttribute("show");
+	
+	if(bShow == null) {
+		// 조회수 증가
+		int res = board_dao.update_readhit(b_idx);
+		session.setAttribute("show", true);
+	}
+
+	-> 한 번 들어가면 브라우저를 끌때까지 저장
+	-> list.do 에서 session show 정보 삭제
+	session.removeAttribute("show");
+
+  - 로그인 성공 후 호출된 페이지로 이동
+
+  	(JSP)
+
+  	// board_view.jsp
+	// 로그인 여부 체크
+	if('${ empty user }' == 'true'){
+		
+		if(!confirm("로그인 후에 답글쓰기가 가능합니다\n로그인 하시겠습니까?")) return;
+		
+		alert("실행중");
+		// 로그인폼으로 이동
+		location.href = "../member/login_form.do?url=" + encodeURIComponent(location.href);
+		return;
+	}
+
+	-> 로그인 폼에서 폼태그 안에 url 값 추가
+	<input type = "hidden" name = "url" value = "${ param.url } ">
+
+	-> 컨트롤러의 로그인 액션에 url 변수추가
+
+	(MemberController)
+
+	@RequestMapping("/member/login.do")
+	public String login(String m_id, String m_pwd, String url, Model model) {
+	...
+	}
+
+	-> url 여부에 따라 페이지 이동
+
+	// url이 비어있으면 메인페이지로 이동
+	if(url==null || url.isEmpty()) {
+	
+	// 현재경로: member
+	return "redirect:../board/list.do";
+	
+	}
+	
+	// url이 있으면 url로 이동
+	return "redirect:"+url;
+
+  - 답글쓰기
+
+    - 답글쓰는 폼 만들어서 데이터 전송(board_reply_form.jsp)
+      -> 답글의 idx를 인풋태그의 히든 속성으로 추가
+    <input type = "hidden" name = "b_idx" value = "${ param.b_idx }"> 
+
+    -> 답글쓰는 액션
+
+    @RequestMapping("/reply.do")
+	public String reply(BoardVo vo) {
+
+		//board/reply.do?b_idx=5&b_subject=123&b_content=123
+		//               -> 기준글의 idx    -> 답글의 정보
+		
+		// textarea \r\n -> html <br>
+		String b_content = vo.getB_content().replaceAll("\r\n", "<br>");
+		vo.setB_content(b_content);
+		
+		// IP 구하기
+		String b_ip = request.getRemoteAddr();
+		vo.setB_ip(b_ip);
+		
+		// 세션에서 입력사용자 정보 구하기
+		MemberVo user = (MemberVo) session.getAttribute("user");
+		
+		// 세션이 만료됐을 경우 로그인 폼으로 이동
+		if(user == null) {
+			return "redirect:../member/login_form.do";
+		}
+		
+		int m_idx = user.getM_idx();
+		vo.setM_idx(m_idx);
+		
+		String m_name = user.getM_name();
+		vo.setM_name(m_name);
+		
+		// 기준글 정보 얻어옴
+		BoardVo baseVo = board_dao.selectOne(vo.getB_idx());
+		
+		// 기준글보다 step이 큰 게시물의 step을 1씩 증가(답글이 들어갈 자리)
+		int res = board_dao.update_step(baseVo);
+		
+		// 답글의 정보를 설정(ref = base_rf, step=base_step+1 depth = base_depth +1)
+		vo.setRef(baseVo.getRef());
+		vo.setStep(baseVo.getStep()+1);
+		vo.setDepth(baseVo.getDepth()+1);
+		
+		// 답글 추가
+		res = board_dao.reply(vo);
+		
+		return "redirect:list.do";
+	}
+
+	-> 	Dao 설정(BoardDao)
+
+	// 기준글보다 step큰 게시물의 step 증가
+	public int update_step(BoardVo baseVo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("board.board_update_step", baseVo);
+	}
+
+	// 답글 추가
+	public int reply(BoardVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("board.board_reply", vo);
+	}
+
+	-> Mapper 수정(board.xml)
+
+	<!-- 기준글보다 step이 큰 게시물은 step 증가 -->
+	<update id = "board_update_step" parameterType = "vo.BoardVo">
+		update board set step = step + 1 
+		where ref = #{ ref } and step > #{ step }
+	</update>
+	
+	<!-- 답글쓰기 -->
+	<insert id = "board_reply" parameterType="vo.BoardVo">
+		insert into board values(
+			seq_board_idx.nextVal,
+			#{ b_subject },
+			#{ b_content },
+			#{ b_ip },
+			sysdate,
+			0,
+			'y',
+			#{ m_idx },
+			#{ m_name },
+			#{ ref },
+			#{ step }, 
+			#{ depth}
+		)
+	</insert>
+
+	-> JSP에서 답글쓰기 제한(board_view.jsp)
+	<!-- 메인글일 경우만 활성화 -->
+	<c:if test = "${ vo.depth eq 0 or vo.step eq 1}">
+	<input type = "button" value = "답글쓰기" class = "btn btn-success" onclick = "reply_form();">
+	</c:if>
+
+  - 게시물 삭제
+
+   - JSP에서 idx를 포함해 데이터 전송(board_view)
+
+   	function del(){
+		
+		if(!confirm("정말 삭제하시겠습니까?")) return;
+		
+		location.href = "delete.do?b_idx=${ vo.b_idx }";
+		
+	}
+
+   -> Controller에서 삭제 액션(BoardController)
+
+   	@RequestMapping("/delete.do")
+	public String delete(int b_idx) {
+		
+		// board/delete.do?b_idx=3
+		
+		int res = board_dao.delete(b_idx);
+		
+		return "redirect:list.do";
+	}
+
+	-> Dao 수정 후 Mapper 작성(board.xml)
+
+	<update id = "board_delete" parameterType = "int">
+		update board set b_use_yn = 'n' where b_idx = #{ b_idx }
+	</update>
+
+	-> JSP 출력(board_list.jsp)
+
+	<!-- 삭제된 상태의 게시물이면 -->
+	<c:if test = "${ vo.b_use_yn eq 'n' }">
+		<font color = red>(삭제된 게시물)</font>
+	</c:if>
+	
+	<!-- 사용중인 게시물이면 -->
+	<c:if test = "${ vo.b_use_yn eq 'y' }">
+		<a href = "view.do?b_idx=${vo.b_idx}">${ vo.b_subject }</a>
+	</c:if>
+
+
+------------------------------------------------------------------------
+
+ - Tomcat Spring 답변형 게시판(11주차/20.11.20)
+
+  - 페이지 처리
+    -> 한 페이지에 몇개를 보여줄지 결정
+    -> 글번호가 아닌 정렬순서에 따른 일련번호 필요
+       -> 페이지 처리에 필요한 SQL 작성
+
+    -- Paging 메뉴에 필요한 SQL 작성
+	
+	select 
+		rank() over(order by ref desc, step asc) as no,
+		* 
+	from board
+
+	-> 실행순서에 따라 그냥 *를 하면 에러가 발생
+	   -> inline view
+
+	select 
+		rank() over(order by ref desc, step asc) as no,
+		b.* -- 실행순서에 따라 그냥 *를 하면 에러가 발생
+	from 
+		(select * from board) b 
+	where no between 1 and 10 
+
+	-> 실행순서에 따라 where절의 no는 사용할 수 없음
+	   -> inline view
+
+	select * 
+	from ( 
+			select 
+				rank() over(order by ref desc, step asc) as no,
+				b.* -- 실행순서에 따라 그냥 *를 하면 에러가 발생
+			from 
+				(select * from board) b -- inline view
+		 )	
+	where no between 1 and 10 
+		
+	-> Mapper 작성(board.xml)
+
+	<!-- 조건별/페이지별 조회 -->
+	<select id = "board_condition_list" parameterType = "java.util.Map" resultType = "board">
+		select * 
+		from ( 
+					select 
+						rank() over(order by ref desc, step asc) as no,
+						b.* 
+					from 
+						(select * from board) b 
+				)	
+		where no between #{ start } and #{ end } 
+	</select>
+
+	-> vo에 no추가 후 getter/setter (BoardVo)
+
+	-> Controller에서 list.do 수정
+	@RequestMapping("/list.do")
+	public String list(Integer page, Model model) {
+		//              int  -> null 값이 들어갈 경우 에러
+		//              Integer -> "객체형" null값 가능
+		
+		// 처음 페이지 설정
+		int nowPage = 1;
+		if(page != null ) nowPage = page;
+		
+		// no의 start/end 계산
+		int start = (nowPage - 1) * MyConstant.Board.BLOCK_LIST + 1;
+		int end = start + MyConstant.Board.BLOCK_LIST - 1;
+		
+		// Map 포장
+		Map map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		
+		List<BoardVo> list = board_dao.selectList(map);
+		model.addAttribute("list", list);
+		
+		// session show 정보 삭제
+		session.removeAttribute("show");
+		
+		return "board/board_list";
+	}
+
+	-> 페이지 수 관리하는 객체(상수) 작성
+	public class MyConstant {
+
+		// 게시판 상수
+		public static class Board{
+			
+			// 1Page당 보여질 게시물수
+			public static final int BLOCK_LIST = 5;
+			
+			// 1화면에 보여줄 페이지수
+			public static final int BLOCK_PAGE = 3;
+			
+		}
+		
+		// QnA (example)
+		public static class QnA{
+			
+			// 1Page당 보여질 게시물수
+			public static final int BLOCK_LIST = 5;
+			
+			// 1화면에 보여줄 페이지수
+			public static final int BLOCK_PAGE = 3;
+			
+		}
+
+			
+	}
+
+	-> Dao 수정
+
+	public List<BoardVo> selectList(Map map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("board.board_condition_list", map);
+	}
+
+	-> JSP에서 글 일련번호 수정
+	${ vo.b_idx } -> ${ vo.no }
+
+	-> src/main/java에 util 패키지 추가후 Paging.java 복사
+
+	-> 전체행수 구하는 Mapper 작성(board.xml)
+	<!-- 전체행(데이터) 수 -->
+	<select id = "board_row_total" resultType = "int">
+		select nvl(count(*), 0) from board
+	</select>
+
+	-> Controller에서 list.do 수정
+
+	@RequestMapping("/list.do")
+	public String list(Integer page, Model model) {
+		//              int  -> null 값이 들어갈 경우 에러
+		//              Integer -> "객체형" null값 가능
+		
+		// 처음 페이지 설정
+		int nowPage = 1;
+		if(page != null ) nowPage = page;
+		
+		// no의 start/end 계산
+		int start = (nowPage - 1) * MyConstant.Board.BLOCK_LIST + 1;
+		int end = start + MyConstant.Board.BLOCK_LIST - 1;
+		
+		// Map 포장
+		Map map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		
+		List<BoardVo> list = board_dao.selectList(map);
+		
+		// 전체행수 구하기
+		int rowTotal = board_dao.selectRowTotal();
+		
+		// 페이지 메뉴 만들기
+		String pageMenu = Paging.getPaging("list.do", nowPage, rowTotal,
+				MyConstant.Board.BLOCK_LIST, MyConstant.Board.BLOCK_PAGE);
+		
+		model.addAttribute("pageMenu", pageMenu);
+		model.addAttribute("list", list);
+		
+		// session show 정보 삭제
+		session.removeAttribute("show");
+		
+		return "board/board_list";
+	}
+
+	-> JSP에서 게시판 테이블 마지막 행에 페이지메뉴 출력(board_list.jsp)
+	<!-- 페이지 메뉴 -->
+	<tr>
+		<td colspan = "5" align = "center">
+			${ pageMenu }
+		</td>
+	</tr>
+
+  - 세션 트래킹 처리
+    ex) 뒤로 돌아갔을때 본 페이지로 돌아가는 것
+
+    -> board_list.jsp 에서 view로 가는 코드 수정
+       <!-- 사용중인 게시물이면 -->
+	   <c:if test = "${ vo.b_use_yn eq 'y' }">
+		  <a href = "view.do?b_idx=${vo.b_idx}&page=${empty param.page ? 1 : param.page}">${ vo.b_subject }</a>
+	   </c:if>
+
+	-> board_view.jsp 에서 전달받은 페이지로 다시 되돌아가는 코드 추가
+	<input type = "button" value = "목록보기" class = "btn btn-primary" 
+		   onclick = "location.href = 'list.do?page=${param.page}' ">
+
+	* 세션에 페이지를 저장해놓고 옮기는건 비효율적
+	  -> 수많은 사용자가 요청하면 과부하
+	  -> GET 방식이 나음
+
+	- delete 액션
+
+	  -> board_view.jsp 에서 del() 함수 수정
+	  function del(){
+		
+		if(!confirm("정말 삭제하시겠습니까?")) return;
+		
+		location.href = "delete.do?b_idx=${ vo.b_idx }&page=${ param.page }";
+		
+	   }
+
+	  -> Controller에서 delete 액션 수정
+
+		@RequestMapping("/delete.do")
+		public String delete(int b_idx, int page, Model model) {
+			
+			// board/delete.do?b_idx=3
+			
+			int res = board_dao.delete(b_idx);
+			
+			// 1. Model을 통한 데이터는 누구한테 전달될까? -> DispatcherServlet
+			// 2. 누구는 현재 데이터를 어떻게 처리할까? -> page Query로 사용: parameter로 전달 (redirect)
+			
+			model.addAttribute("page", page);
+			
+			return "redirect:list.do?";
+		}
+
+	- reply 액션
+
+	  -> board_reply_form.jsp 에서 input태그의 hidden 타입으로 전달
+	  <input type = "hidden" name = "b_idx" value = "${ param.b_idx }"> 
+
+	  -> Controller에서 reply 액션 수정
+
+	  public String reply(BoardVo vo, Model model, int page) {
+	  ...
+	  	model.addAttribute("page", page);
+		return "redirect:list.do?";
+	  }
+
+	=> delete - location.href = "..." 로 page 전달
+	 -> location.href = "delete.do?b_idx=${ vo.b_idx }&page=${ param.page }";
+
+	   reply - f.action = "..." , f.submit() 으로 page 전달
+	 -> <input type = "hidden" name = "b_idx" value = "${ param.b_idx }"> 
+
+	 => location.href는 &page=${ param.page }
+	    f.submit()은 <input> 태그 hidden 타입
+
+   - 검색 서비스
+
+    - board_list.jsp에서 게시판 테이블에 검색창 추가
+
+	<!-- 검색 메뉴 -->
+	<tr>
+		<td colspan = "5" align = "center">
+			<select id = "search">
+				<option value = "all">전체보기</option>
+				<option value = "name">이름</option>
+				<option value = "subject">제목</option>
+				<option value = "content">내용</option>			
+				<option value = "name_subject_content">이름+제목+내용</option>			
+			</select>
+			<input id = "search_text" value = "${ param.search_text }">
+			<input type = "button" value = "검색" onclick = "find();">
+		</td>
+	</tr>
+
+	-> find() 함수 정의 후 데이터 전송
+
+	function find(){
+		
+		var search = $("#search").val();
+		var search_text = $("#search_text").val().trim();
+		
+		if(search != 'all' && search_text == ''){
+			alert("검색어를 입력하세요");
+			$("#search_text").val("");
+			$("#search_text").focus();
+			return;
+		}
+		
+		// 검색어를 붙여서 목록요청
+		location.href = "list.do?search=" + search + "&search_text=" + encodeURIComponent(search_text);
+	}
+
+	-> Controller에서 list.do 액션 수정
+	   -> Map 변수에 검색종류, 검색어 값 추가
+	   -> 전체행수 구하는 메소드 수정
+	   -> 검색 필터 변수 추가 후 페이지 메뉴 메소드 수정
+
+	// /board/list.do
+	// /board/list.do?page=1
+	// /board/list.do?search=subject&search_text=스타벅스
+	// /board/list.do?page=2&search=subject&search_text=스타벅스
+	// Map으로 Parameter를 받을경우: @RequestParam Map mapParam
+	//                                           -> page는 Integer로 받고 나머지는 Map으로 저장
+	//											 
+	@RequestMapping("/list.do")
+	public String list(Integer page, Model model, String search_text, String search) {
+		//              int  -> null 값이 들어갈 경우 에러
+		//              Integer -> "객체형" null값 가능
+		
+		// 처음 페이지 설정
+		int nowPage = 1;
+		if(page != null ) nowPage = page;
+		
+		// no의 start/end 계산
+		int start = (nowPage - 1) * MyConstant.Board.BLOCK_LIST + 1;
+		int end = start + MyConstant.Board.BLOCK_LIST - 1;
+		
+		// 검색 param
+		if(search == null || search.isEmpty()) search = "all";
+	
+		// Map 포장 검색조건 + 페이지조건
+		Map map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		
+		// 전체검색이 아니면
+		if(!search.equals("all")) {
+			
+			if(search.equals("name")) {
+				map.put("name", search_text);
+			}else if(search.equals("subject")) {
+				map.put("subject", search_text);
+			}else if(search.equals("content")) {
+				map.put("content", search_text);
+			}else if(search.equals("name_subject_content")) {
+				map.put("name", search_text);
+				map.put("subject", search_text);
+				map.put("content", search_text);
+			}
+			
+		}
+		
+		List<BoardVo> list = board_dao.selectList(map);
+		
+		// 전체행수 구하기
+		int rowTotal = board_dao.selectRowTotal(map);
+
+		// 검색 필터
+		String filter = String.format("search=%s&search_text=%s", search, search_text);
+		// 페이지 메뉴 만들기
+		String pageMenu = Paging.getPaging("list.do", nowPage, filter, rowTotal,
+				MyConstant.Board.BLOCK_LIST, MyConstant.Board.BLOCK_PAGE);
+		
+		// System.out.println(pageMenu);
+		model.addAttribute("pageMenu", pageMenu);
+		model.addAttribute("list", list);
+		
+		// session show 정보 삭제
+		session.removeAttribute("show");
+		
+		return "board/board_list";
+	}
+
+	-> BoardDao에서 전체행수 구하는 메소드 수정 후 Mapper 수정
+
+	<!-- 검색 조건에 맞는 행(데이터) 수 -->
+	<select id = "board_row_total" resultType = "int" parameterType="java.util.Map">
+		select nvl(count(*), 0) from board 
+		<trim prefix = "where" prefixOverrides="or">
+			<if test="name != null">
+				m_name like '%' || #{name} || '%'
+			</if>
+			<if test="subject != null">
+				or b_subject like '%' || #{subject} || '%'
+			</if>
+			<if test="content != null">
+				or b_content like '%' || #{content} || '%'
+			</if>
+		</trim>
+	</select>
+
+
+	<!-- 전체 -> 조건별/페이지별 조회 -->
+	<select id = "board_condition_list" parameterType = "java.util.Map" resultType = "board">
+		select * 
+		from ( 
+				select 
+					rank() over(order by ref desc, step asc) as no,
+					b.* 
+				from 
+					(
+					select * from board 
+					<trim prefix = "where" prefixOverrides="or">
+						<if test="name != null">
+							m_name like '%' || #{name} || '%'
+						</if>
+						<if test="subject != null">
+							or b_subject like '%' || #{subject} || '%'
+						</if>
+						<if test="content != null">
+							or b_content like '%' || #{content} || '%'
+						</if>
+					</trim>
+					) b 
+				)	
+		where no between #{ start } and #{ end } 
+	</select>
+					
+	-> util 패키지의 Pagining.java 에서 getPaginig 메소드 오버로드
+       -> filter 변수 추가 (파라미터에 search=..&search_text=.. 추가)
+
+    public static String getPaging(String pageURL,int nowPage, String  filter, int rowTotal,int blockList, int blockPage){
+    ...
+
+    if(isPrevPage){
+		sb.append("<a href ='"+pageURL+"?page=");
+		sb.append(startPage - 1);
+		sb.append("&" + filter);
+		sb.append("'>◀</a>");
+	}
+
+	...
+
+	else{//현재 페이지가 아니면
+		sb.append("&nbsp;<a href='"+pageURL+"?page=");
+		sb.append(i);
+		sb.append("&" + filter);
+		sb.append("'>");
+		sb.append(i);
+		sb.append("</a>");
+	}
+
+	...
+
+	if(isNextPage){
+		sb.append("<a href='"+pageURL+"?page=");
+		sb.append(endPage + 1);
+		sb.append("&" + filter);
+		sb.append("'>▶</a>");
+	}
+
+
+	=> 검색해서 다른 페이지로 넘어가면 전체 페이지가 조회되는 문제발생
+	   -> 새션 트래킹
+
+	-> board_list.jsp 에서 view 넘어갈때 검색값을 파라미터로 추가
+
+	<!-- 사용중인 게시물이면 -->
+	<c:if test = "${ vo.b_use_yn eq 'y' }">
+		<a href = "view.do?b_idx=${vo.b_idx}&page=${empty param.page ? 1 : param.page}&search=${param.search}&search_text=${param.search_text}">${ vo.b_subject }</a>
+	</c:if>
+
+	-> board_view.jsp 에서 list로 넘어갈때 검색값 파라미터 추가
+	<input type = "button" value = "목록보기" class = "btn btn-primary" 
+ 	 onclick = "location.href = 'list.do?page=${param.page}&search=${param.search}&search_text=${param.search_text}' ">
+
+
+	-> board_view.jsp 에서 삭제하기(del()) 할때도 검색값 파라미터 추가
+	location.href = "delete.do?b_idx=${ vo.b_idx }&page=${ param.page }&search=${param.search}&search_text=${searach_text}";
+
+
+	-> Controller에서 delete 액션 수정
+
+	@RequestMapping("/delete.do")
+	public String delete(int b_idx, int page, Model model, String search, String search_text) {
+		
+		// board/delete.do?b_idx=3
+		
+		int res = board_dao.delete(b_idx);
+		
+		// 1. Model을 통한 데이터는 누구한테 전달될까? -> DispatcherServlet
+		// 2. 누구는 현재 데이터를 어떻게 처리할까? -> page Query로 사용: parameter로 전달 (redirect)
+		
+		model.addAttribute("page", page);
+		model.addAttribute("search", search);
+		model.addAttribute("search_text", search_text);
+		
+		return "redirect:list.do?";
+	}
+
+	- 답글쓰기는 전체검색이 아니면 안보일 수 있으므로 전체검색으로만 답글쓰기
+
+	(board_view.jsp)
+	<!-- 전체검색이면서 메인글일 경우만 활성화 -->
+	<c:if test = "${ vo.depth eq 0 && (empty param.search or param.search eq 'all' ) }">
+	<input type = "button" value = "답글쓰기" class = "btn btn-success" onclick = "reply_form();">
+	</c:if>
+
+
+	- 파라미터에 search 값이 없을 경우 초기화(board_list.jsp)
+
+	// jQuery 초기화 이벤트
+	$(document).ready(function(){
+		
+		// 파라미터에 search 값이 없을 경우 전체보기로 설정
+		//        or search 값이 있으면 설정한 값으로 지정
+		var search = "${ param.search }";
+		if(search == '') search = 'all';
+		
+		$("#search").val(search);
+		
+		// 전체보기로 바꿨을 경우 검색창 초기화
+		$("#search").change(function(){
+			
+			if( $("#search").val() == 'all') $("#search_text").val("");
+			
+		});
+		
+	});
+
+------------------------------------------------------------------------
+
+ - Tomcat AOP, JSON Converter (12주차/20.11.23)
+
+  - AOP
+    : 반복하는 메소드가 있을 경우, 감시하는 객체를 만들고 반복된 동작을 특정한 지점에 정하여 관리하는 것
+
+    - Pointcut: 정해진 지점에 Advice를 삽입하는 것
+    - Join Point: 감시 지점을 정하는 것
+    - Weaving: Advice를 삽입하는 과정
+
+  - AOP 장점
+    - 중복 코드 제거
+    - 비즈니스 로직의 가독성 향상
+    - 생산성 향상
+    - 재사용성 향상
+    - 변경 용이성 증대
+
+  - Spring Component 구성
+
+    - UI Layer(@Controller)
+      : 사용자의 요청을 직접 처리
+
+	- Service Layer(@Service)
+	  : Dao의 통합 작업
+
+	- Repository(Data) Layer(@Repository)
+	  : DB 연결, 데이터 처리
+
+  - AOP 환경설정
+    
+    - Tomcat\스프링Tip\maven에서 lib등록\maven에서 spring_aop 복사
+      
+      aopalliance
+	  aopalliance
+	  1.0
+
+	  org.aspectj
+	  aspectjweaver
+	  1.6.11
+
+	  cglib
+	  cglib
+	  2.2
+
+      - pom.xml -> Dependencies에 라이브러리 등록
+
+    - Tomcat\스프링Tip\Spring자료\spring_aop\src\advice에서 Advice.java 복사 -> src/main/java에 붙여넣기
+
+    - Tomcat\스프링Tip\Spring자료\spring_aop 에서 controller-serlvet
+
+    <!-- 공통 관심사항이 구현된 Advice객체 생성 -->
+	<bean id="advice" class="advice.Advice" />
+
+	<!-- AOP설정 : Target객체의 모든 메서드에 Advice에 구현된 공통기능을 적용한다. -->
+	<aop:config>
+		<aop:pointcut expression="execution(public * target.Service.*(..))"
+			id="myPoint" />
+		<aop:aspect id="test" ref="advice">
+			<aop:before method="before" pointcut-ref="myPoint" />
+			<aop:after method="after" pointcut-ref="myPoint" />
+		</aop:aspect>
+	</aop:config>
+
+	  - 복사 -> src/main/resources -> config.spring.context에 context-6-aop.xml 생성 후 붙여넣기
+
+	  - context-6-aop.xml의 하단 Namespaces -> aop 체크
+
+  - context-6-aop.xml 분석
+
+	<bean id="advice" class="advice.Advice" />
+
+	<aop:config>
+	
+		<aop:pointcut expression=
+			"execution(public * service.*Service.*(..))" -> Join point
+								-> 서비스 패키지의 Service로 끝나는 모든 객체의 모든 메소드(변수 상관없이)
+			id="myPoint" />
+			
+		<aop:aspect id="test" ref="advice">
+			<aop:before method="before" pointcut-ref="myPoint" />
+			     -> pointcut이 호출되기 전에 "before" 메소드 실행
+			<aop:after method="after" pointcut-ref="myPoint" />
+				 -> advice.java에 있는 메소드
+		</aop:aspect>
+	</aop:config>
+
+	
+  * s.toLongString(): 생략된 약어를 모두 표현해 출력
+
+  - Advice가 어떤 객체의 수행시간을 계산하고자 할때
+
+  	long start;
+
+	public void before(JoinPoint jp){
+		Signature s =  jp.getSignature();
+		
+		start = System.currentTimeMillis();
+		
+		System.out.println("----before:" + s);
+	}
+	
+	public void after(JoinPoint jp){
+		Signature s =  jp.getSignature();
+		
+		long end = System.currentTimeMillis();
+		
+		System.out.printf("수행시간:%s(ms)\n", end - start);
+		
+		System.out.println("----after:" + s.toLongString());
+	}
+
+	-> 서로 다른 유저가 똑같은 동작을 수행한다고 할때, 이런 방식으로 하면 어떤 start가 누구의 객체의 것인지 모름
+	-> 에러 발생
+	-> request를 통해 binding 시킴 (각 유저마다 공간을 할당)
+	->
+
+	@Autowired
+	HttpServletRequest request;
+	
+	public void before(JoinPoint jp){
+		Signature s =  jp.getSignature();
+		
+		long start = System.currentTimeMillis();
+		
+		request.setAttribute("start", start);
+		
+		System.out.println("----before:" + s);
+	}
+	
+	public void after(JoinPoint jp){
+		Signature s =  jp.getSignature();
+		
+		long end = System.currentTimeMillis();
+		
+		long start = (Long)request.getAttribute("start");
+		
+		System.out.printf("수행시간:%s(ms)\n", end - start);
+		
+		System.out.println("----after:" + s.toLongString());
+	}
+
+  - 위빙: pointcut이 호출될 때 메소드를 엮는 과정
+
+  - AOP 객체 수동 생성 과정
+
+    -> Dao 인터페이스 생성
+
+    public interface TestDao {
+
+		String test();
+		
+	}
+
+	-> Dao 인터페이스 구현 객체 생성
+
+	public class TestDaoImpl implements TestDao {
+
+		SqlSession sqlSession;
+		
+		public SqlSession getSqlSession() {
+			return sqlSession;
+		}
+
+		public void setSqlSession(SqlSession sqlSession) {
+			this.sqlSession = sqlSession;
+		}
+
+		@Override
+		public String test() {
+			// TODO Auto-generated method stub
+			return "TestDaoImpl's test method";
+		}
+
+	}
+
+	-> Service 인터페이스 객체 생성
+
+	public interface TestService {
+
+		Map test() throws Exception;
+		
+		
+	}
+
+	-> Service 인터페이스 구현 객체 생성
+
+
+	public class TestServiceImpl implements TestService{
+
+		TestDao test_dao;
+		Test2Dao test2_dao;
+		
+		public TestDao getTest_dao() {
+			return test_dao;
+		}
+
+		public void setTest_dao(TestDao test_dao) {
+			this.test_dao = test_dao;
+		}
+
+		public Test2Dao getTest2_dao() {
+			return test2_dao;
+		}
+
+		public void setTest2_dao(Test2Dao test2_dao) {
+			this.test2_dao = test2_dao;
+		}
+
+		@Override
+		public Map test() throws Exception {
+			// TODO Auto-generated method stub
+			
+			//                             현재 시간
+			// long start = System.currentTimeMillis();
+			
+			String msg1 = test_dao.test();
+			String msg2 = test2_dao.test();
+			
+			Map map = new HashMap();
+			map.put("msg1", msg1);
+			map.put("msg2", msg2);
+			
+			Thread.sleep(1234); // 1.234초
+			
+			// long end = System.currentTimeMillis();
+			// System.out.println("수행시간:%s(ms)\n", end-start);
+			// 수행시간을 구하는 메소드 -> 메소드 마다 중복
+			
+			return map;
+		}
+		
+	}
+
+	-> Controller 객체 생성
+
+	@Controller
+	public class TestController {
+
+		TestService test_service;
+
+		public TestService getTest_service() {
+			return test_service;
+		}
+
+		public void setTest_service(TestService test_service) {
+			this.test_service = test_service;
+		}
+		
+		@RequestMapping("/test.do")
+		public String test(Model model) {
+			
+			try {
+				Map map = test_service.test();
+				model.addAttribute("map", map);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return "test";	
+		}
+		
+	}
+
+	-> dao context 에서 dao 객체 생성
+
+	<!-- TestDaoImpl -->
+	<bean id = "test_dao" class = "dao.TestDaoImpl">
+		<property name = "sqlSession" ref = "sqlSessionBean"/>
+	</bean>
+
+	-> service context에서 service 객체 생성
+
+	<bean id = "test_service" class = "service.TestServiceImpl">
+		<property name = "test_dao" ref="test_dao"></property>
+		<property name = "test2_dao" ref="test2_dao"></property>
+	</bean>
+
+	-> servlet context에서 controller 객체 생성
+
+	<beans:bean class="com.ic.aop.TestController">
+		<beans:property name = "test_service" ref = "test_service"/>
+	</beans:bean>
+
+	=> 수동으로 연결해주기 때문에 DaoImpl에 @Repository, ServiceImpl에
+	@Service 선언할 필요 없음
+
+
+  - AOP 객체 자동 생성 과정
+ 
+      -> Dao 인터페이스 생성
+
+	    public interface MyDao {
+		
+			String hi_mydao();
+			
+		}
+
+      -> Dao 인터페이스 구현 객체 생성(@Repository)
+
+      	@Repository("mydao") // => Component
+		public class MyDaoImpl implements MyDao {
+
+			@Autowired
+			SqlSession sqlSession;
+			
+			public MyDaoImpl() {
+				// TODO Auto-generated constructor stub
+				System.out.println("--1. MyDaoImpl()--");
+			}
+			
+			@Override
+			public String hi_mydao() {
+				// TODO Auto-generated method stub
+				return "Hi~ MyDao!";
+			}
+
+		}
+
+      -> Service 인터페이스 생성 (Dao를 관리하는 객체)
+
+	    public interface MyService {
+
+			String hi_myservice();
+		
+		}
+
+      -> Service 인터페이스 구현 객체 생성
+
+     	@Service("myservice")
+		public class MyServiceImpl implements MyService {
+
+			@Autowired
+			MyDao mydao;
+			//    -> DaoImpl 객체의 @Repository 이름과 같아야함
+			
+			public MyServiceImpl() {
+				// TODO Auto-generated constructor stub
+				System.out.println("--2. MyServiceImpl--");
+			}
+			
+			@Override
+			public String hi_myservice() {
+				// TODO Auto-generated method stub
+				String msg = mydao.hi_mydao();
+				return String.format("hi_myservice => [%s]", msg);
+			}
+
+		}
+
+      -> Controller 생성
+
+		@Controller
+		public class MyController {
+
+			@Autowired
+			MyService myservice;
+			//        -> ServiceImpl 객체의 @Service 이름과 같아야함
+			
+			public MyController() {
+				// TODO Auto-generated constructor stub
+				System.out.println("--3. MyController()--");
+			}
+			
+			@RequestMapping("/hello.do")
+			@ResponseBody // 응답된 내용을 body로 출력 (view X)
+			public String hello(){
+				
+				String msg = myservice.hi_myservice();
+				return msg;
+			}
+			
+		}
+
+	-> 자동 생성(setter/constructor 없이)했을 때 servlet-context
+
+	<!-- Auto-Detecting: 해당 패키지내를 탐색 
+						 -> 컴포넌트가 발견되면 생성-->
+    <context:component-scan base-package="dao" />
+	<context:component-scan base-package="service" />
+	<context:component-scan base-package="controller" />
+
+	or
+
+	<!-- 만드는 순서대로 작성 -->
+	<context:component-scan base-package="dao, service, controller" />
+
+
+  - AOP 반자동/수동 생성 과정
+
+    ->  ServiceImpl -> Autowired로 받았을때 service context에서
+
+    <!-- 객체를 수동생성시 Autowired 옵션 -->
+	<context:annotation-config/>
+	<!-- autowire - 
+			byType: Spring Container에서 Type이 일치하는 객체 Injection
+		    byName: Spring Container에서 Name이 일치하는 객체 Injection
+	 	    default: 1.byType -> 2. byName
+	 -->
+	<bean id = "myservice2" class = "service.MyService2Impl" autowire="byName"></bean>
+
+  - JSON Converter
+    : 결과값을 JSON type으로 변환
+      -> 공통데이터를 서버로 공급 (다른 플랫폼과 의사소통)
+
+    - 환경설정
+      - pom.xml -> Dependencies 라이브러리 추가
+      	<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+	  - context-6-jsonconverter.xml 생성 후 붙여넣기
+
+	  	<bean id="jsonHttpMessageConverter"
+			class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+		<bean
+			class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+			<property name="messageConverters">
+				<list>
+					<ref bean="jsonHttpMessageConverter" />
+				</list>
+			</property>
+		</bean>
+
+	- 사용 방법
+
+	  @RequestMapping("visit/delete.do") 
+	  public int delete(int idx){
+		  
+	  int res = visit_dao.delete(idx);
+	  
+	 	return "redirect:list.do"; 
+	  
+	  }
+
+	  -> 결과값을 view가 아닌 JSON 형태로 전송
+
+	  @RequestMapping("visit/delete.do") 
+	  @ResponseBody
+	  public Map delete(int idx){
+		  
+		  int res = visit_dao.delete(idx);
+		  
+		  Map map = new HashMap();
+		  if(res == 1) {
+			  map.put("result", "success");
+		  }else {
+			  map.put("result", "fail");
+		  }
+		  
+		  	return map; 
+	  }
+
+	  -> {"result":"success"} 형태로 출력
+
+    - 목록 요청시 List가 아닌 JSON으로 변환해서 보내야함
+      -> 받아서 쓰는 프로그램에서 파싱을 못함
+
+    @RequestMapping("/visit/list.do")
+	@ResponseBody
+	public Map list(String search, String search_text) {
+		
+		if(search == null) search = "all";
+		
+		Map map = new HashMap();
+		
+		// 전체검색이 아니면
+		if(!search.equals("all")) {
+			
+			if(search.equals("name")) {
+				map.put("name", search_text);
+			}else if(search.equals("content")) {
+				map.put("content", search_text);
+			}else if(search.equals("name_content")) {
+				map.put("name", search_text);
+				map.put("content", search_text);
+			}
+			
+		}
+		
+		// 목록 가져오기
+		List<VisitVo> list = visit_dao.selectList(map);
+
+		Map json_map = new HashMap();
+		json_map.put("list", list);
+		
+		return json_map;
+	}
+
+
+------------------------------------------------------------------------
+
+ - Tomcat transaction (12주차/20.11.24)
+
+  - Transaction 처리
+
+    - 환경설정
+
+    -> Tomcat\스프링Tip\spring_transaction 에서 myexception 복사
+       -> src/main/java에 붙여넣기
+    -> Tomcat\스프링Tip\spring_transaction 에서 context.. 파일 3개 복사
+       -> src/main/resources - config.spring.context에 붙여넣기
+       -> context-1-0-datasource.xml 삭제 후 기존에 있던 context-1-datasource -> context-1-0-datasource 이름 변경
+    -> context-1-1-transaction.xml 에서
+       execution( * service.ProductService.*(..)) 로 수정
+    -> Tomcat\스프링Tip\spring_transaction_ui 에서 css 폴더 복사
+       -> src/main/webapp/resources 에 붙여넣기
+    -> Tomcat\스프링Tip\spring_transaction_ui 에서 product 폴더 복사
+       -> src/main/webapp/WEB-INF/views에 붙여넣기
+    -> Tomcat\스프링Tip\spring_transaction_ui 에서 재고관리DB 복사
+       -> 프로젝트에 붙여넣기
+    -> 재고관리DB에서 재고테이블 -> 상품명 ->
+       name  varchar2(255) not null unique 으로 수정
+       => 재고테이블에서는 같은 이름의 상품이 존재하면 안되기 때문
+
+    * sqlSession, dbcp 에러 -> Build Path 해서 ojdbc14.jar 등록해보기 
+
+    - 설정 과정
+
+      - Vo 생성
+        -> ProductVo
+
+      - mapper 생성
+      	-> product_in.xml
+
+  	 	<!-- 입고목록 조회 -->
+	 	<select id="product_in_list" resultType="product">
+	 		select * from product_in order by idx
+	 	</select>
+	 	
+	 	<!-- 입고 등록 -->
+	 	<insert id = "product_in_insert" parameterType = "product">
+	 		insert into product_in values(seq_product_in_idx.nextVal, #{name}, #{cnt}, sysdate)
+	 	</insert>
+      	
+      	   product_out.xml -> 입고와 동일
+
+      	   product_remain.xml
+
+      	<!-- 재고목록 조회 -->
+	 	<select id="product_remain_list" resultType="product">
+	 		select * from product_remain order by idx
+	 	</select>
+	 	
+	 	<!-- 재고 등록 -->
+	 	<insert id = "product_remain_insert" parameterType = "product">
+	 		insert into product_remain values(seq_product_remain_idx.nextVal, #{name}, #{cnt}, sysdate)
+	 	</insert>
+	 	
+	 	<!-- 상품명 -> 객체정보 1건 -->
+	 	<select id = "product_remain_one" parameterType="String" resultType="product">
+	 		select * from product_remain where name = #{name}
+	 	</select>
+	 	
+	 	<!-- 재고 수정 -->
+	 	<update id = "product_remain_update" parameterType="product">
+	 		update product_remain set cnt = #{cnt}, regdate = sysdate where name = #{name}
+	 	</update>
+
+      - mapper 등록
+        -> mybatis-config.xml
+
+      - dao 생성 (인터페이스)
+        -> ProductDao
+
+        public interface ProductDao {
+
+			List<ProductVo> 	selectList();
+			ProductVo 			selectOne(String name);
+			int 				insert(ProductVo vo);
+			int 				update(ProductVo vo);
+			
+		}
+
+	  - daoImpl 생성 (인터페이스 구현 객체)
+	    -> Product_In_DaoImpl
+
+	    public class Product_In_DaoImple implements ProductDao {
+
+			SqlSession sqlSession;
+			
+			public SqlSession getSqlSession() {
+				return sqlSession;
+			}
+
+			public void setSqlSession(SqlSession sqlSession) {
+				this.sqlSession = sqlSession;
+			}
+
+			@Override
+			public List<ProductVo> selectList() {
+				// TODO Auto-generated method stub
+				return sqlSession.selectList("product_in.product_in_list");
+			}
+
+			@Override
+			public ProductVo selectOne(String name) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public int insert(ProductVo vo) {
+				// TODO Auto-generated method stub
+				return sqlSession.insert("product_in.product_in_insert", vo);
+			}
+
+			@Override
+			public int update(ProductVo vo) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+		}
+
+	       Product_Out_DaoImpl -> Product_In_DaoImpl과 동일
+	       
+	       Product_Remain_DaoImpl
+
+        public class Product_Remain_DaoImple implements ProductDao {
+
+			SqlSession sqlSession;
+			
+			public SqlSession getSqlSession() {
+				return sqlSession;
+			}
+
+			public void setSqlSession(SqlSession sqlSession) {
+				this.sqlSession = sqlSession;
+			}
+
+			@Override
+			public List<ProductVo> selectList() {
+				// TODO Auto-generated method stub
+				return sqlSession.selectList("product_remain.product_remain_list");
+			}
+
+			@Override
+			public ProductVo selectOne(String name) {
+				// TODO Auto-generated method stub
+				return sqlSession.selectOne("product_remain.product_remain_one", name);
+			}
+
+			@Override
+			public int insert(ProductVo vo) {
+				// TODO Auto-generated method stub
+				return sqlSession.insert("product_remain.product_remain_insert", vo);
+			}
+
+			@Override
+			public int update(ProductVo vo) {
+				// TODO Auto-generated method stub
+				return sqlSession.update("product_remain.product_remain_update", vo);
+			}
+
+		}
+
+	  - Service 생성(인터페이스)
+
+		public interface ProductService {
+
+			Map 	selectList(); // 전체조회
+			// 입고등록
+			int 	insert_in(ProductVo vo) throws Exception; 
+			// 출고등록
+			int 	insert_out(ProductVo vo) throws Exception;
+		}	  
+
+	  - ServiceImple 생성(인터페이스 구현 객체)
+
+	    -> ProductServiceImpl
+
+	    public class ProductServiceImpl implements ProductService {
+
+			ProductDao product_in_dao;
+			ProductDao product_out_dao;
+			ProductDao product_remain_dao;
+			
+			public ProductDao getProduct_in_dao() {
+				return product_in_dao;
+			}
+
+			public void setProduct_in_dao(ProductDao product_in_dao) {
+				this.product_in_dao = product_in_dao;
+			}
+
+			public ProductDao getProduct_out_dao() {
+				return product_out_dao;
+			}
+
+			public void setProduct_out_dao(ProductDao product_out_dao) {
+				this.product_out_dao = product_out_dao;
+			}
+
+			public ProductDao getProduct_remain_dao() {
+				return product_remain_dao;
+			}
+
+			public void setProduct_remain_dao(ProductDao product_remain_dao) {
+				this.product_remain_dao = product_remain_dao;
+			}
+
+			@Override
+			public Map selectList() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public int insert_in(ProductVo vo) throws Exception {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int insert_out(ProductVo vo) throws Exception {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+		}
+
+	  - dao Injection - context-3-dao.xml
+
+	  	<!-- 입고Dao -->
+		<bean id = "product_in_dao" class = "dao.Product_In_DaoImple">
+			<property name = "sqlSession" ref = "sqlSessionBean"/>
+		</bean>
+		
+		<!-- 출고Dao -->
+		<bean id = "product_out_dao" class = "dao.Product_Out_DaoImple">
+			<property name = "sqlSession" ref = "sqlSessionBean"/>
+		</bean>
+		
+		<!-- 입고Dao -->
+		<bean id = "product_remain_dao" class = "dao.Product_Remain_DaoImple">
+			<property name = "sqlSession" ref = "sqlSessionBean"/>
+		</bean>
+
+	  - service Injection - context-4-service.xml
+
+	  	<!-- ProductService -->
+		<bean id = "product_service" class = "service.ProductServiceImpl">
+			<property name = "product_in_dao" ref = "product_in_dao"/>
+			<property name = "product_out_dao" ref = "product_out_dao"/>
+			<property name = "product_remain_dao" ref = "product_remain_dao"/>
+		</bean>
+
+	  - controller Injection - servlet-context.xml
+
+  	<!-- 수동생성 -->
+	<beans:bean class = "com.ic.tx.ProductController">
+		<beans:property name = "product_service" ref="product_service"/>
+	</beans:bean>
+
+	- 입고/출고/재고 목록 가져오기
+
+	  - ProductController 
+
+		@Controller
+		public class ProductController {
+			
+			ProductService product_service;
+
+			public ProductService getProduct_service() {
+				return product_service;
+			}
+
+			public void setProduct_service(ProductService product_service) {
+				this.product_service = product_service;
+			}
+
+			@RequestMapping("/product/list.do")
+			public String list(Model model) {
+				
+				// 입고/출고/재고 목록 가져오기
+				Map map = product_service.selectList();
+				
+				// Model을 통한 request binding
+				model.addAttribute("map", map);
+				
+				return "product/product_list";
+			}
+			
+		}
+
+	  - ProductServiceImpl
+
+	  	@Override
+		public Map selectList() {
+			// TODO Auto-generated method stub
+			
+			// 입고목록
+			List<ProductVo> in_list = product_in_dao.selectList();
+			
+			// 출고목록
+			List<ProductVo> out_list = product_out_dao.selectList();
+					
+			// 재고목록
+			List<ProductVo> remain_list = product_remain_dao.selectList();
+			
+			Map map = new HashMap();
+			map.put("in_list", in_list);
+			map.put("out_list", out_list);
+			map.put("remain_list", remain_list);
+					
+			return map;
+			}
+
+		=> 각 view가 통합된 proudct_list.jsp에서 각 리스트 출력
+
+	- 입고 등록
+
+	  - ProductController
+
+	  	@RequestMapping("/product/insert_in.do")
+		public String insert_in(ProductVo vo) {
+			
+			try {
+				
+				int res = product_service.insert_in(vo);
+			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+			
+			return "redirect:list.do";
+		}
+
+	  - ProductServiceImpl
+
+  		@Override
+		public int insert_in(ProductVo vo) throws Exception {
+			// TODO Auto-generated method stub
+			
+			// 입고등록
+			int res = product_in_dao.insert(vo);
+			
+			// 재고등록/수정
+			// 현재 입고 상품이 재고 테이블에 있는지 확인
+			ProductVo remainVo = product_remain_dao.selectOne(vo.getName());
+			
+			// 재고 테이블에 없을때
+			if(remainVo == null) {
+				res = product_remain_dao.insert(vo);
+			
+			// 재고 테이블에 있을때
+			}else {
+				// 재고량 = 현재고량 + 입고량
+				int cnt = remainVo.getCnt() + vo.getCnt();
+				remainVo.setCnt(cnt);
+				res = product_remain_dao.update(remainVo);
+			}
+			
+			return res;
+		}
+
+
+	- 출고등록(Transaction 처리)
+
+	  - Transaction 처리 과정
+
+	    -> proudct_service에서 Exception(예외) 발생(Pointcut)
+	    -> advice에 전달
+	    -> txAdvice
+	    -> txManager
+	    -> ds Rollback
+
+	    * 예외가 발생하지 않으면 sqlSessionBean에서 auto commit이 됌
+
+	  - ProductController
+
+	  	@RequestMapping("/product/insert_out.do")
+		public String insert_out(ProductVo vo, Model model) {
+			
+			try {
+				int res = product_service.insert_out(vo);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+				
+				// product_service가 보낸 예외 처리를 받음
+				String message = e.getMessage();
+				// Model의 용도: Query's parameter 사용
+				model.addAttribute("error", message);
+				// list.do?error=remain_not
+				// list.do?error=remain_lack
+			}
+			
+			
+			return "redirect:list.do";
+		}
+
+	  - ProductServiceImpl
+
+	  	@Override
+		public int insert_out(ProductVo vo) throws Exception {
+			// TODO Auto-generated method stub
+			
+			// 출고등록
+			int res = product_out_dao.insert(vo);
+			
+			// 재고테이블에서 출고상품정보 얻어오기
+			ProductVo remainVo = product_remain_dao.selectOne(vo.getName());
+			
+			// 출고한 상품이 재고테이블에 없는 경우
+			if(remainVo == null) {
+				// service에서 예외를 발생 -> advice
+				// 내부에 예외를 던지면 => Spring txManager에 의해서 rollback처리
+				// 예외 처리를 ProductController가 받음
+				throw new Exception("remain_not");
+			}
+			
+			// 재고량이 부족한 경우
+			//     출고량   >   재고량
+			if(vo.getCnt() > remainVo.getCnt()) {
+				throw new Exception("remain_lack");
+			}
+			
+			// 재고량 = 현재재고량 - 출고량
+			int cnt = remainVo.getCnt() - vo.getCnt();
+			
+			// 재고량 수정
+			remainVo.setCnt(cnt);
+			res = product_remain_dao.update(remainVo);
+			
+			return res;
+		}
+
+	  - product_list.jsp
+
+	  	<script type="text/javascript">
+		window.onload=function(){
+		      
+			// 300ms후에 메세지 호출
+			setTimeout(show_message, 300)
+			     
+		};
+		 
+		function show_message(){
+			 
+			if("${ param.error eq 'remain_not' }"=='true')
+			{
+				alert('재고목록에 출고할\n상품이 없습니다');
+			}
+			
+			if("${ param.error eq 'remain_lack' }"=='true')
+			{
+				alert('출고할 상품수량이 부족합니다');
+			}
+			 
+		}
+		 
+		</script>
+
+	- 입고/출고 취소
+
+	  - product_in/out.jsp
+
+		<td>
+			<input type = "button" value="x" onclick="delete_input('${vo.idx}');">
+			${ vo.name }
+		</td>
+
+		<script type="text/javascript">
+
+		function delete_input(idx){
+			
+			if(!confirm("해당 입고상품의 입고를 취소하시겠습니까?")) return;
+			
+			location.href = "delete_in.do?idx="+idx;
+		}
+		</script>
+
+	  - ProductController
+
+	  	// 입고취소
+		@RequestMapping("/product/delete_in.do")
+		public String delete_in(int idx) {
+			
+			int res = product_service.delete_in(idx);
+			
+			return "redirect:list.do";
+		}
+		
+		// 출고취소
+		@RequestMapping("/product/delete_out.do")
+		public String delete_out(int idx) {
+			
+			int res = product_service.delete_out(idx);
+			
+			return "redirect:list.do";
+		}
+
+	  - ProductServiceImpl
+
+	  	// 입고 취소
+		@Override
+		public int delete_in(int idx) {
+			// TODO Auto-generated method stub
+			
+			ProductVo InVo = product_in_dao.selectOneIdx(idx);
+			ProductVo remainVo = product_remain_dao.selectOne(InVo.getName());
+			
+			int cnt = remainVo.getCnt() - InVo.getCnt();
+			remainVo.setCnt(cnt);
+			
+			int res = product_in_dao.delete(idx);		
+			res = product_remain_dao.update(remainVo);
+			
+			return res;
+		}
+
+		@Override
+		public int delete_out(int idx) {
+			// TODO Auto-generated method stub
+			
+			ProductVo OutVo = product_out_dao.selectOneIdx(idx);
+			ProductVo remainVo = product_remain_dao.selectOne(OutVo.getName());
+			
+			int cnt = remainVo.getCnt() + OutVo.getCnt();
+			remainVo.setCnt(cnt);
+			
+			int res = product_out_dao.delete(idx);
+			res = product_remain_dao.update(remainVo);
+			
+			return res;
+		}
+
+	  - ProductDao(인터페이스)
+
+	  	public interface ProductDao {
+
+			List<ProductVo> 	selectList();
+			ProductVo 			selectOne(String name);
+			int 				insert(ProductVo vo);
+			int 				update(ProductVo vo);
+
+			ProductVo		    selectOneIdx(int idx);
+			int 				delete(int idx);
+			
+		}
+
+	  - ProductDaoImpl(입고/출고)
+
+	  	@Override
+		public ProductVo selectOneIdx(int idx) {
+			// TODO Auto-generated method stub
+			return sqlSession.selectOne("product_in.product_in_one", idx);
+		}
+
+		@Override
+		public int delete(int idx) {
+			// TODO Auto-generated method stub
+			return sqlSession.delete("product_in.product_in_delete", idx);
+		}
+
+	  - product_in/out.xml
+
+	   	<!-- idx에 해당되는 입고상품 1건 -->
+	 	<select id="product_in_one" resultType="product" parameterType="int">
+	 		select * from product_in where idx = #{idx}
+	 	</select>
+	 	
+	 	<!-- 입고 취소 -->
+	 	<delete id = "product_in_delete" parameterType="int">
+	 		delete from product_in where idx = #{idx}
+	 	</delete>
+
+------------------------------------------------------------------------
